@@ -1,5 +1,6 @@
 # ella: the Extensible Letter LAuncher
 
-A minimalistic but lightning fast gesture based Android launcher written in Flutter.
+A minimalistic but lightning fast gesture based Android launcher written in Flutter. Currently WIP but can already be used as a daily driver.
 
-https://user-images.githubusercontent.com/36965186/182027129-c42ba22a-8246-461d-9440-b5fe99a1dbfa.mp4
+## Demo
+![Demo gif](https://user-images.githubusercontent.com/36965186/182027601-2414fa71-6426-4796-86d4-f8dcf366abd8.gif)
