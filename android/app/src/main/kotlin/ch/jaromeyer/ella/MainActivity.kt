@@ -1,4 +1,4 @@
-package ch.jaromeyer.ella.ella
+package ch.jaromeyer.ella
 
 import io.flutter.embedding.android.FlutterActivity
 import  io.flutter.embedding.android.TransparencyMode
