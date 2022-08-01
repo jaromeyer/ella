@@ -28,9 +28,7 @@ class AppsProvider extends ChangeNotifier {
   Future<List<Application>> getFilteredApps() {
     return _appsFuture.then((apps) {
       if (_filter.isEmpty) {
-        apps = apps
-            .where((app) => _pinnedAppsBox.values.contains(app.packageName))
-            .toList();
+        apps = apps.where((app) => isPinned(app)).toList();
       } else if (_filter.length == 1) {
         apps = apps
             .where((app) =>
