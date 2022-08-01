@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  bool _paused = false;
+  bool _wasPaused = false;
 
   final DigitalInkRecognizer digitalInkRecognizer =
       DigitalInkRecognizer(languageCode: 'de');
@@ -51,18 +51,12 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _paused = true;
-    } else if (state == AppLifecycleState.resumed) {
-      // close any dialog/modalsheet/page
-      Navigator.popUntil(context, ModalRoute.withName('/'));
-      // show pinned apps
-      context.read<AppsProvider>().resetFilter();
+      _wasPaused = true;
+    } else if (state == AppLifecycleState.resumed && _wasPaused) {
+      _wasPaused = false;
       // start animation when returning from another app
-      if (_paused) {
-        _paused = false;
-        _controller.value = 0.7;
-        _controller.animateTo(1);
-      }
+      _controller.value = 0.7;
+      _controller.animateTo(1);
     }
   }
 

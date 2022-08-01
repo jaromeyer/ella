@@ -56,16 +56,16 @@ class AppTile extends StatelessWidget {
             ),
             ListTile(
               onTap: () {
-                DeviceApps.openAppSettings(app.packageName);
                 Navigator.pop(context);
+                DeviceApps.openAppSettings(app.packageName);
               },
               leading: const Icon(Icons.info),
               title: const Text('App info'),
             ),
             ListTile(
               onTap: () {
-                DeviceApps.uninstallApp(app.packageName);
                 Navigator.pop(context);
+                DeviceApps.uninstallApp(app.packageName);
               },
               leading: const Icon(Icons.delete),
               title: const Text('Uninstall'),
@@ -100,7 +100,10 @@ class AppTile extends StatelessWidget {
     return Consumer<Settings>(
       builder: (context, settings, child) {
         return ListTile(
-          onTap: () => DeviceApps.openApp(app.packageName),
+          onTap: () {
+            DeviceApps.openApp(app.packageName);
+            context.read<AppsProvider>().resetFilter();
+          },
           onLongPress: () => _showActionSheet(context, app),
           leading: settings.getShowIcons()
               ? SizedBox(
