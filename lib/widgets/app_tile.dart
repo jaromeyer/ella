@@ -12,7 +12,7 @@ class AppTile extends StatelessWidget {
 
   const AppTile(this.app, {Key? key}) : super(key: key);
 
-  void _showActionSheet(BuildContext context, Application app) {
+  void _showActionSheet(BuildContext context) {
     AppsProvider appsProvider = context.read<AppsProvider>();
     showModalBottomSheet(
       context: context,
@@ -22,20 +22,18 @@ class AppTile extends StatelessWidget {
       builder: (context) {
         return Wrap(
           children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  app.appName,
-                  style: const TextStyle(fontSize: 30),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: CachedMemoryImage(
+                    width: 40,
+                    bytes: (app as ApplicationWithIcon).icon,
+                    identifier: ValueKey(app),
+                  ),
                 ),
-              ),
-            ),
-            const Divider(
-              height: 0,
-              thickness: 2,
-              indent: 6,
-              endIndent: 6,
+                Text(app.appName, style: const TextStyle(fontSize: 30)),
+              ],
             ),
             ListTile(
               onTap: () {
@@ -104,14 +102,12 @@ class AppTile extends StatelessWidget {
             DeviceApps.openApp(app.packageName);
             context.read<AppsProvider>().resetFilter();
           },
-          onLongPress: () => _showActionSheet(context, app),
+          onLongPress: () => _showActionSheet(context),
           leading: settings.getShowIcons()
-              ? SizedBox(
+              ? CachedMemoryImage(
                   width: 40,
-                  child: CachedMemoryImage(
-                    bytes: (app as ApplicationWithIcon).icon,
-                    identifier: ValueKey(app),
-                  ),
+                  bytes: (app as ApplicationWithIcon).icon,
+                  identifier: ValueKey(app),
                 )
               : null,
           title: settings.getShowNames()
