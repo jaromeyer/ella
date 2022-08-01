@@ -96,7 +96,7 @@ class AppTile extends StatelessWidget {
                   width: 40,
                   child: CachedMemoryImage(
                     bytes: (app as ApplicationWithIcon).icon,
-                    identifier: Key(app.packageName),
+                    identifier: ValueKey(app),
                   ),
                 )
               : null,
