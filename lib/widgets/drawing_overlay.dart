@@ -1,8 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart'
-    as mlkit;
+import 'package:flutter/material.dart' hide Ink;
+import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
 
 import '../utils/painter.dart';
 
@@ -10,7 +9,7 @@ class DrawingOverlay extends StatefulWidget {
   const DrawingOverlay({Key? key, this.callback, required this.child})
       : super(key: key);
 
-  final Function(mlkit.Ink)? callback;
+  final Function(Ink)? callback;
   final Widget child;
 
   @override
@@ -18,15 +17,15 @@ class DrawingOverlay extends StatefulWidget {
 }
 
 class _DrawingOverlayState extends State<DrawingOverlay> {
-  final mlkit.Ink _ink = mlkit.Ink();
+  final Ink _ink = Ink();
   Timer? _timer;
 
   void onPanStart(DragStartDetails details) {
     final box = context.findRenderObject() as RenderBox;
     final point = box.globalToLocal(details.globalPosition);
-    final mlkit.StrokePoint strokePoint = mlkit.StrokePoint(
+    final StrokePoint strokePoint = StrokePoint(
         x: point.dx, y: point.dy, t: DateTime.now().millisecondsSinceEpoch);
-    final mlkit.Stroke stroke = mlkit.Stroke();
+    final Stroke stroke = Stroke();
     stroke.points.add(strokePoint);
     _ink.strokes.add(stroke); // start new stroke
   }
@@ -34,9 +33,9 @@ class _DrawingOverlayState extends State<DrawingOverlay> {
   void onPanUpdate(DragUpdateDetails details) {
     final box = context.findRenderObject() as RenderBox;
     final point = box.globalToLocal(details.globalPosition);
-    final mlkit.StrokePoint strokePoint = mlkit.StrokePoint(
+    final StrokePoint strokePoint = StrokePoint(
         x: point.dx, y: point.dy, t: DateTime.now().millisecondsSinceEpoch);
-    List<mlkit.StrokePoint> points = _ink.strokes.last.points;
+    List<StrokePoint> points = _ink.strokes.last.points;
     points.add(strokePoint); // add point to current stroke
     if (strokePoint.t - points.first.t >= 40) {
       _timer?.cancel(); // cancel timer if valid stroke has been detected
@@ -45,7 +44,7 @@ class _DrawingOverlayState extends State<DrawingOverlay> {
   }
 
   void onPanEnd(DragEndDetails details) {
-    List<mlkit.StrokePoint> points = _ink.strokes.last.points;
+    List<StrokePoint> points = _ink.strokes.last.points;
     // ignore short strokes
     if (points.last.t - points.first.t >= 40) {
       widget.callback!(_ink); // send strokes to callback
