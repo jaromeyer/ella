@@ -37,6 +37,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.4
+  android_intent_plus: ^3.1.1
   intl: ^0.17.0
   perfect_freehand: ^1.0.4
   provider: ^6.0.3

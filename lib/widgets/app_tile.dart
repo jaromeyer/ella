@@ -1,3 +1,4 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +71,16 @@ class AppTile extends StatelessWidget {
               title: const Text('Uninstall'),
             ),
             const Divider(),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                const AndroidIntent(
+                        action: 'android.intent.action.SET_WALLPAPER')
+                    .launchChooser('Set wallpaper using');
+              },
+              leading: const Icon(Icons.wallpaper),
+              title: const Text('Change wallpaper'),
+            ),
             ListTile(
               onTap: () {
                 Navigator.pop(context);
