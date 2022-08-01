@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../providers/settings_provider.dart';
 
@@ -105,8 +104,11 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowWeather())
               GestureDetector(
-                onTap: () => launchUrlString('https://wttr.in',
-                    mode: LaunchMode.externalApplication),
+                onTap: () {
+                  const AndroidIntent(
+                          action: 'action_view', data: 'https://wttr.in')
+                      .launch();
+                },
                 child: Text(
                   _weatherString,
                   style: const TextStyle(color: Colors.white, fontSize: 16),
