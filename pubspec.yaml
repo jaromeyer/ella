@@ -32,7 +32,6 @@ dependencies:
   animated_list_plus: ^0.4.3
   battery_plus: ^2.1.4
   device_apps: ^2.2.0
-  flutter_alarm_clock: ^0.0.2 # consider removing
   google_mlkit_digital_ink_recognition: ^0.5.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0

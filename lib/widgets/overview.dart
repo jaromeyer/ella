@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -85,7 +85,11 @@ class _OverviewWidgetState extends State<OverviewWidget> {
           children: [
             if (settings.getShowClock())
               GestureDetector(
-                onTap: () => FlutterAlarmClock.showAlarms(),
+                onTap: () {
+                  const AndroidIntent(
+                          action: 'android.intent.action.SHOW_ALARMS')
+                      .launch();
+                },
                 child: Text(
                   DateFormat('HH:mm').format(_dateTimeNow),
                   style: const TextStyle(color: Colors.white, fontSize: 42),
