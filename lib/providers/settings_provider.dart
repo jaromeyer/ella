@@ -7,6 +7,9 @@ class Settings extends ChangeNotifier {
   bool getEnableAnimations() =>
       _settingsBox.get('enableAnimations', defaultValue: true);
 
+  int getDrawingTimeout() =>
+      _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
+
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
 
   bool getShowClock() => _settingsBox.get('showClock', defaultValue: true);
@@ -21,6 +24,11 @@ class Settings extends ChangeNotifier {
 
   void setEnableAnimations(bool value) {
     _settingsBox.put('enableAnimations', value);
+    notifyListeners();
+  }
+
+  void setDrawingTimeout(int value) {
+    _settingsBox.put('drawingTimeoutMs', value);
     notifyListeners();
   }
 

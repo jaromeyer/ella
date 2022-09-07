@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart' hide Ink;
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/settings_provider.dart';
 import '../utils/painter.dart';
 
 class DrawingOverlay extends StatefulWidget {
-  const DrawingOverlay({Key? key, this.callback, required this.child})
-      : super(key: key);
-
   final Function(Ink)? callback;
   final Widget child;
+
+  const DrawingOverlay({Key? key, this.callback, required this.child})
+      : super(key: key);
 
   @override
   State<DrawingOverlay> createState() => _DrawingOverlayState();
@@ -48,7 +50,9 @@ class _DrawingOverlayState extends State<DrawingOverlay> {
     // ignore short strokes
     if (points.last.t - points.first.t >= 40) {
       widget.callback!(_ink); // send strokes to callback
-      _timer = Timer(const Duration(milliseconds: 500), () {
+      _timer = Timer(
+          Duration(milliseconds: context.read<Settings>().getDrawingTimeout()),
+          () {
         setState(() => _ink.strokes = []);
       });
     } else {
@@ -71,9 +75,7 @@ class _DrawingOverlayState extends State<DrawingOverlay> {
       child: Stack(
         children: [
           widget.child,
-          CustomPaint(
-            painter: StrokePainter(ink: _ink),
-          ),
+          CustomPaint(painter: StrokePainter(context: context, ink: _ink)),
         ],
       ),
     );

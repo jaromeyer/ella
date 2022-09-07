@@ -19,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
             sections: [
               SettingsSection(
                 title: const Text('General'),
-                tiles: <SettingsTile>[
+                tiles: <AbstractSettingsTile>[
                   SettingsTile(
                     onPressed: (_) => showAboutDialog(
                         context: context,
@@ -40,6 +40,17 @@ class SettingsScreen extends StatelessWidget {
                     },
                     leading: const Icon(Icons.home),
                     title: const Text('Change default launcher'),
+                  ),
+                  SettingsTile(
+                    title: const Text('Gesture timeout'),
+                    value: Slider(
+                        value: settings.getDrawingTimeout().toDouble(),
+                        min: 0,
+                        max: 2000,
+                        divisions: 200,
+                        label: '${settings.getDrawingTimeout().toString()}ms',
+                        onChanged: (value) =>
+                            settings.setDrawingTimeout(value.round())),
                   ),
                 ],
               ),
