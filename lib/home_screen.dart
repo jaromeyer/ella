@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
@@ -72,6 +73,39 @@ class _HomeScreenState extends State<HomeScreen>
     if (mounted) context.read<AppsProvider>().setFilter(prefix);
   }
 
+  void _showActionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+      ),
+      builder: (context) {
+        return Wrap(
+          children: [
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                const AndroidIntent(
+                        action: 'android.intent.action.SET_WALLPAPER')
+                    .launchChooser('Set wallpaper using');
+              },
+              leading: const Icon(Icons.wallpaper),
+              title: const Text('Change wallpaper'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/settings');
+              },
+              leading: const Icon(Icons.settings),
+              title: const Text('Launcher settings'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // make statusbar transparent
@@ -86,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: GestureDetector(
         onDoubleTap: () {}, // TODO: add double tap action
-        onLongPress: () => Navigator.pushNamed(context, '/settings'),
+        onLongPress: () => _showActionSheet(context),
         child: DrawingOverlay(
           callback: _recognizeStrokes,
           child: ScaleTransition(
