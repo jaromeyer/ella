@@ -1,3 +1,4 @@
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -16,9 +17,31 @@ class SettingsScreen extends StatelessWidget {
         builder: (context, settings, child) {
           return SettingsList(
             sections: [
-              const SettingsSection(
-                title: Text('General'),
-                tiles: <SettingsTile>[],
+              SettingsSection(
+                title: const Text('General'),
+                tiles: <SettingsTile>[
+                  SettingsTile(
+                    onPressed: (_) => showAboutDialog(
+                        context: context,
+                        applicationVersion: '0.0.1',
+                        applicationIcon: const Image(
+                          image: AssetImage('assets/icon.png'),
+                          height: 40,
+                        ),
+                        applicationLegalese: 'Licensed under the GPLv3'),
+                    leading: const Icon(Icons.info_outline),
+                    title: const Text('About ella'),
+                  ),
+                  SettingsTile(
+                    onPressed: (_) {
+                      const AndroidIntent(
+                              action: 'android.settings.HOME_SETTINGS')
+                          .launch();
+                    },
+                    leading: const Icon(Icons.home),
+                    title: const Text('Change default launcher'),
+                  ),
+                ],
               ),
               SettingsSection(
                 title: const Text('Overview'),
@@ -29,21 +52,25 @@ class SettingsScreen extends StatelessWidget {
                     title: const Text('Show clock'),
                   ),
                   if (settings.getShowClock())
-                    SettingsTile(title: const Text('Pick clock app')),
+                    SettingsTile(
+                        title: const Text('(placeholder) Pick clock app')),
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setShowDate(value),
                     initialValue: settings.getShowDate(),
                     title: const Text('Show date'),
                   ),
                   if (settings.getShowDate())
-                    SettingsTile(title: const Text('Pick calendar app')),
+                    SettingsTile(
+                        title: const Text('(placeholder) Pick calendar app')),
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setShowWeather(value),
                     initialValue: settings.getShowWeather(),
                     title: const Text('Show weather'),
                   ),
                   if (settings.getShowWeather())
-                    SettingsTile(title: const Text('Configure weather format')),
+                    SettingsTile(
+                        title: const Text(
+                            '(placeholder) Configure weather format')),
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setShowBattery(value),
                     initialValue: settings.getShowBattery(),
@@ -52,7 +79,7 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
               SettingsSection(
-                title: const Text('Launcher'),
+                title: const Text('App list'),
                 tiles: <SettingsTile>[
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setEnableAnimations(value),
@@ -62,12 +89,12 @@ class SettingsScreen extends StatelessWidget {
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setShowIcons(value),
                     initialValue: settings.getShowIcons(),
-                    title: const Text('Show app icons'),
+                    title: const Text('Show icons'),
                   ),
                   SettingsTile.switchTile(
                     onToggle: (value) => settings.setShowNames(value),
                     initialValue: settings.getShowNames(),
-                    title: const Text('Show app names'),
+                    title: const Text('Show names'),
                   ),
                 ],
               ),
