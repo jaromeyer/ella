@@ -11,7 +11,7 @@ import 'home_screen.dart';
 import 'settings_screen.dart';
 
 Future<void> main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // initialize hive stuff
   await Hive.initFlutter();
   await Hive.openBox('settings');
