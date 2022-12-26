@@ -61,7 +61,6 @@ class _AppListState extends State<AppList> {
                       : 'No apps found for "$filter"',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.white,
                     fontSize: 30,
                     fontWeight: FontWeight.w300,
                   ),

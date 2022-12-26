@@ -5,13 +5,15 @@ import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_re
 import 'package:perfect_freehand/perfect_freehand.dart';
 
 class StrokePainter extends CustomPainter {
+  final BuildContext context;
   final Ink ink;
 
-  StrokePainter({required this.ink});
+  StrokePainter({required this.context, required this.ink});
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.white;
+    Paint paint = Paint()
+      ..color = Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
     for (Stroke stroke in ink.strokes) {
       List<Point> line = [
         for (StrokePoint sp in stroke.points) Point(sp.x, sp.y)

@@ -91,7 +91,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                 },
                 child: Text(
                   DateFormat('HH:mm').format(_dateTimeNow),
-                  style: const TextStyle(color: Colors.white, fontSize: 42),
+                  style: const TextStyle(fontSize: 42),
                 ),
               ),
             if (settings.getShowDate())
@@ -99,7 +99,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                 onTap: () => DeviceApps.openApp('org.lineageos.etar'),
                 child: Text(
                   DateFormat.MMMEd().format(_dateTimeNow),
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             if (settings.getShowWeather())
@@ -111,13 +111,13 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                 },
                 child: Text(
                   _weatherString,
-                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             if (settings.getShowBattery())
               Text(
                 _isCharging ? '$_batteryLevel%+' : '$_batteryLevel%',
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
           ],
         );
