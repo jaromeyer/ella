@@ -120,7 +120,10 @@ class _HomeScreenState extends State<HomeScreen>
       },
       child: GestureDetector(
         onDoubleTap: () {}, // TODO: add double tap action
-        onLongPress: () => _showActionSheet(context),
+        onLongPress: () {
+          HapticFeedback.heavyImpact();
+          _showActionSheet(context);
+        },
         child: DrawingOverlay(
           callback: _recognizeStrokes,
           child: ScaleTransition(
