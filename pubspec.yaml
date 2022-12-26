@@ -29,18 +29,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  android_intent_plus: ^3.1.1+1
+  android_intent_plus: ^3.1.5
   animated_list_plus: ^0.4.4
-  battery_plus: ^2.1.4+1
+  battery_plus: ^3.0.2
   device_apps: ^2.2.0
-  flutter_launcher_icons: ^0.10.0
-  google_mlkit_digital_ink_recognition: ^0.5.0
+  flutter_launcher_icons: ^0.11.0
+  google_mlkit_digital_ink_recognition: ^0.6.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   http: ^0.13.5
-  intl: ^0.17.0
+  intl: ^0.18.0
   perfect_freehand: ^1.0.4
-  provider: ^6.0.3
+  provider: ^6.0.5
   settings_ui: ^2.0.2
 
   # The following adds the Cupertino Icons font to your application.
