@@ -87,6 +87,7 @@ class AppTile extends StatelessWidget {
               leading: const Icon(Icons.settings),
               title: const Text('Launcher settings'),
             ),
+            Container(height: MediaQuery.of(context).padding.bottom),
           ],
         );
       },

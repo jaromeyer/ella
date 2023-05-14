@@ -100,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen>
               leading: const Icon(Icons.settings),
               title: const Text('Launcher settings'),
             ),
+            Container(height: MediaQuery.of(context).padding.bottom),
           ],
         );
       },
