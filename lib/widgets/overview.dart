@@ -60,9 +60,8 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     _registerPeriodicTimer(_update);
     // register battery state listener
     Battery().onBatteryStateChanged.listen((BatteryState state) {
-      setState(() {
-        _isCharging = state == BatteryState.charging;
-      });
+      _isCharging = state == BatteryState.charging;
+      if (mounted) setState(() {});
     });
   }
 
