@@ -47,7 +47,7 @@ class SettingsScreen extends StatelessWidget {
                         value: settings.getDrawingTimeout().toDouble(),
                         min: 0,
                         max: 2000,
-                        divisions: 200,
+                        divisions: 20,
                         label: '${settings.getDrawingTimeout().toString()}ms',
                         onChanged: (value) =>
                             settings.setDrawingTimeout(value.round())),
