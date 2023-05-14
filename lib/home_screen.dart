@@ -116,7 +116,6 @@ class _HomeScreenState extends State<HomeScreen>
         return Future.value(false);
       },
       child: GestureDetector(
-        onDoubleTap: () {}, // TODO: add double tap action
         onLongPress: () {
           HapticFeedback.heavyImpact();
           _showActionSheet(context);
