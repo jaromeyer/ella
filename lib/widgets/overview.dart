@@ -74,11 +74,11 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     super.dispose();
   }
 
-  // TODO: remove hard coded package names
   @override
   Widget build(BuildContext context) {
     return Consumer<Settings>(
-      builder: (context, settings, child) {
+      builder: (_, settings, __) {
+        var textColor = settings.getDarkText() ? Colors.black : Colors.white;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -86,38 +86,41 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               GestureDetector(
                 onTap: () {
                   const AndroidIntent(
-                          action: 'android.intent.action.SHOW_ALARMS')
-                      .launch();
+                    action: 'android.intent.action.SHOW_ALARMS',
+                  ).launch();
                 },
                 child: Text(
                   DateFormat('HH:mm').format(_dateTimeNow),
-                  style: const TextStyle(fontSize: 42),
+                  style: TextStyle(fontSize: 42, color: textColor),
                 ),
               ),
             if (settings.getShowDate())
               GestureDetector(
-                onTap: () => DeviceApps.openApp('org.lineageos.etar'),
+                onTap: () => DeviceApps.openApp(
+                  settings.getCalendarPackageName(),
+                ),
                 child: Text(
                   DateFormat.MMMEd().format(_dateTimeNow),
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: textColor),
                 ),
               ),
             if (settings.getShowWeather())
               GestureDetector(
                 onTap: () {
                   const AndroidIntent(
-                          action: 'action_view', data: 'https://wttr.in')
-                      .launch();
+                    action: 'action_view',
+                    data: 'https://wttr.in',
+                  ).launch();
                 },
                 child: Text(
                   _weatherString,
-                  style: const TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: textColor),
                 ),
               ),
             if (settings.getShowBattery())
               Text(
                 _isCharging ? '$_batteryLevel%+' : '$_batteryLevel%',
-                style: const TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16, color: textColor),
               ),
           ],
         );

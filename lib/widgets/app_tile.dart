@@ -97,7 +97,8 @@ class AppTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<Settings>(
-      builder: (context, settings, child) {
+      builder: (context, settings, _) {
+        var textColor = settings.getDarkText() ? Colors.black : Colors.white;
         return ListTile(
           onTap: () {
             DeviceApps.openApp(app.packageName);
@@ -114,9 +115,10 @@ class AppTile extends StatelessWidget {
           title: settings.getShowNames()
               ? Text(
                   app.appName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w300,
+                    color: textColor,
                   ),
                 )
               : null,

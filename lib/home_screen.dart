@@ -86,8 +86,8 @@ class _HomeScreenState extends State<HomeScreen>
               onTap: () {
                 Navigator.pop(context);
                 const AndroidIntent(
-                        action: 'android.intent.action.SET_WALLPAPER')
-                    .launchChooser('Set wallpaper using');
+                  action: 'android.intent.action.SET_WALLPAPER',
+                ).launchChooser('Set wallpaper using');
               },
               leading: const Icon(Icons.wallpaper),
               title: const Text('Change wallpaper'),
@@ -109,10 +109,6 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // make statusbar transparent
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
     // go "home" when back gesture received
     return WillPopScope(
       onWillPop: () {

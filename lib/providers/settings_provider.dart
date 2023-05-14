@@ -4,11 +4,10 @@ import 'package:hive/hive.dart';
 class Settings extends ChangeNotifier {
   final Box _settingsBox = Hive.box('settings');
 
+  bool getDarkText() => _settingsBox.get('darkText', defaultValue: false);
+
   bool getEnableAnimations() =>
       _settingsBox.get('enableAnimations', defaultValue: true);
-
-  int getDrawingTimeout() =>
-      _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
 
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
 
@@ -22,13 +21,19 @@ class Settings extends ChangeNotifier {
 
   bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
 
-  void setEnableAnimations(bool value) {
-    _settingsBox.put('enableAnimations', value);
+  int getDrawingTimeout() =>
+      _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
+
+  String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
+      defaultValue: "org.lineageos.etar");
+
+  void setDarkText(bool value) {
+    _settingsBox.put('darkText', value);
     notifyListeners();
   }
 
-  void setDrawingTimeout(int value) {
-    _settingsBox.put('drawingTimeoutMs', value);
+  void setEnableAnimations(bool value) {
+    _settingsBox.put('enableAnimations', value);
     notifyListeners();
   }
 
@@ -59,6 +64,11 @@ class Settings extends ChangeNotifier {
 
   void setShowWeather(bool value) {
     _settingsBox.put('showWeather', value);
+    notifyListeners();
+  }
+
+  void setDrawingTimeout(int value) {
+    _settingsBox.put('drawingTimeoutMs', value);
     notifyListeners();
   }
 }
