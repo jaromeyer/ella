@@ -70,6 +70,11 @@ class AppTile extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
+              onTap: () {},
+              leading: const Icon(Icons.apps),
+              title: const Text('Show all apps (not implemented)'),
+            ),
+            ListTile(
               onTap: () {
                 Navigator.pop(context);
                 const AndroidIntent(
