@@ -30,7 +30,7 @@ Future<void> main() async {
   DigitalInkRecognizerModelManager modelManager =
       DigitalInkRecognizerModelManager();
   if (!(await modelManager.isModelDownloaded('de'))) {
-    await modelManager.downloadModel('de');
+    await modelManager.downloadModel('de', isWifiRequired: false);
   }
 
   runApp(const EllaApp());
