@@ -60,9 +60,10 @@ class _AppListState extends State<AppList> {
                       ? 'Add favorite apps to be displayed here'
                       : 'No apps found for "$filter"',
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w300,
+                    color: settings.getDarkText() ? Colors.black : Colors.white,
                   ),
                 );
               }

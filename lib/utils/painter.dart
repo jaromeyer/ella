@@ -1,8 +1,10 @@
 import 'dart:core';
 
+import 'package:ella/providers/settings_provider.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
 import 'package:perfect_freehand/perfect_freehand.dart';
+import 'package:provider/provider.dart';
 
 class StrokePainter extends CustomPainter {
   final BuildContext context;
@@ -12,8 +14,9 @@ class StrokePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()
-      ..color = Theme.of(context).textTheme.bodyText1?.color ?? Colors.white;
+    Paint paint = Paint();
+    paint.color =
+        context.read<Settings>().getDarkText() ? Colors.black : Colors.white;
     for (Stroke stroke in ink.strokes) {
       List<Point> line = [
         for (StrokePoint sp in stroke.points) Point(sp.x, sp.y)
