@@ -30,8 +30,8 @@ class StrokePainter extends CustomPainter {
     final outlinePoints = getStroke(
       points,
       size: 10,
-      smoothing: 1,
-      thinning: -0.3,
+      smoothing: 0.5,
+      thinning: 0,
       streamline: 1,
     );
 
