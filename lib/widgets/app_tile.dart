@@ -16,7 +16,7 @@ class AppTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Settings>(
       builder: (context, settings, _) {
-        var textColor = settings.getDarkText() ? Colors.black : Colors.white;
+        var textColor = settings.getTextColor();
         return ListTile(
           onTap: () {
             DeviceApps.openApp(app.packageName);

@@ -15,8 +15,7 @@ class StrokePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint();
-    paint.color =
-        context.read<Settings>().getDarkText() ? Colors.black : Colors.white;
+    paint.color = context.read<Settings>().getTextColor();
     for (Stroke stroke in ink.strokes) {
       List<Point> line = [
         for (StrokePoint sp in stroke.points) Point(sp.x, sp.y)

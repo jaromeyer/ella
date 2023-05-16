@@ -63,7 +63,7 @@ class _AppListState extends State<AppList> {
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w300,
-                    color: settings.getDarkText() ? Colors.black : Colors.white,
+                    color: settings.getTextColor(),
                   ),
                 );
               }

@@ -4,8 +4,7 @@ import 'package:hive/hive.dart';
 class Settings extends ChangeNotifier {
   final Box _settingsBox = Hive.box('settings');
 
-  bool getDarkText() => _settingsBox.get('darkText', defaultValue: false);
-
+  // getters
   bool getEnableAnimations() =>
       _settingsBox.get('enableAnimations', defaultValue: true);
 
@@ -27,11 +26,10 @@ class Settings extends ChangeNotifier {
   String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
       defaultValue: "org.lineageos.etar");
 
-  void setDarkText(bool value) {
-    _settingsBox.put('darkText', value);
-    notifyListeners();
-  }
+  Color getTextColor() =>
+      Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
 
+  // setters
   void setEnableAnimations(bool value) {
     _settingsBox.put('enableAnimations', value);
     notifyListeners();
@@ -69,6 +67,16 @@ class Settings extends ChangeNotifier {
 
   void setDrawingTimeout(int value) {
     _settingsBox.put('drawingTimeoutMs', value);
+    notifyListeners();
+  }
+
+  void setCalendarPackageName(String value) {
+    _settingsBox.put('calendarPackageName', value);
+    notifyListeners();
+  }
+
+  void setTextColor(Color color) {
+    _settingsBox.put('textColor', color.value);
     notifyListeners();
   }
 }

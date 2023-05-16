@@ -53,10 +53,11 @@ class SettingsScreen extends StatelessWidget {
                             settings.setDrawingTimeout(value.round())),
                   ),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setDarkText(value),
-                    initialValue: settings.getDarkText(),
-                    title:
-                        const Text('Dark text (enable for bright wallpapers)'),
+                    onToggle: (value) => settings
+                        .setTextColor(value ? Colors.black : Colors.white),
+                    initialValue: settings.getTextColor() == Colors.black,
+                    title: const Text(
+                        'Dark text on homescreen (for bright wallpapers)'),
                   ),
                 ],
               ),

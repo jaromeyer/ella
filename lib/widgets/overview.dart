@@ -77,7 +77,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   Widget build(BuildContext context) {
     return Consumer<Settings>(
       builder: (_, settings, __) {
-        var textColor = settings.getDarkText() ? Colors.black : Colors.white;
+        var textColor = settings.getTextColor();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
