@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:android_intent_plus/android_intent.dart';
+import 'package:ella/widgets/action_sheet.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
@@ -73,45 +73,6 @@ class _HomeScreenState extends State<HomeScreen>
     if (mounted) context.read<AppsProvider>().setFilter(prefix);
   }
 
-  void _showActionSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-      ),
-      builder: (context) {
-        return Wrap(
-          children: [
-            ListTile(
-              onTap: () {},
-              leading: const Icon(Icons.apps),
-              title: const Text('Show all apps (not implemented)'),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                const AndroidIntent(
-                  action: 'android.intent.action.SET_WALLPAPER',
-                ).launchChooser('Set wallpaper using');
-              },
-              leading: const Icon(Icons.wallpaper),
-              title: const Text('Change wallpaper'),
-            ),
-            ListTile(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pushNamed(context, '/settings');
-              },
-              leading: const Icon(Icons.settings),
-              title: const Text('Launcher settings'),
-            ),
-            Container(height: MediaQuery.of(context).padding.bottom),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     // go "home" when back gesture received
@@ -123,17 +84,17 @@ class _HomeScreenState extends State<HomeScreen>
       child: GestureDetector(
         onLongPress: () {
           HapticFeedback.heavyImpact();
-          _showActionSheet(context);
+          showActionSheet(context);
         },
         child: DrawingOverlay(
           callback: _recognizeStrokes,
           child: ScaleTransition(
             scale: _animation,
-            child: Scaffold(
+            child: const Scaffold(
               backgroundColor: Colors.transparent,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
                     child: OverviewWidget(),
