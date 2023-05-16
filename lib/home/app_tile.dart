@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/apps_provider.dart';
 import '../providers/settings_provider.dart';
 import '../utils/cached_image.dart';
-import '../widgets/action_sheet.dart';
+import 'action_sheet.dart';
 
 class AppTile extends StatelessWidget {
   final Application app;

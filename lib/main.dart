@@ -6,10 +6,10 @@ import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_re
 import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/apps_provider.dart';
-import '../providers/settings_provider.dart';
-import 'home_screen.dart';
-import 'settings_screen.dart';
+import 'home/home_screen.dart';
+import 'providers/apps_provider.dart';
+import 'providers/settings_provider.dart';
+import 'settings/settings_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

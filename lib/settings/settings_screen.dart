@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../providers/settings_provider.dart';
-import '../utils/cached_image.dart';
+import '../../providers/settings_provider.dart';
+import '../../utils/cached_image.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);

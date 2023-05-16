@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:ella/widgets/action_sheet.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/apps_provider.dart';
-import '../widgets/app_list.dart';
-import '../widgets/drawing_overlay.dart';
-import '../widgets/overview.dart';
+import 'action_sheet.dart';
+import 'app_list.dart';
+import 'drawing_overlay.dart';
+import 'overview.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
