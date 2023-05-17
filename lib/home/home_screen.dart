@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ella/providers/settings_provider.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
@@ -89,21 +90,22 @@ class _HomeScreenState extends State<HomeScreen>
         child: DrawingOverlay(
           callback: _recognizeStrokes,
           child: ScaleTransition(
-            scale: _animation,
-            child: const Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
-                    child: OverviewWidget(),
+              scale: _animation,
+              child: Consumer<Settings>(
+                builder: (context, settings, child) => Scaffold(
+                  backgroundColor: settings.getBackgroundColor(),
+                  body: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
+                        child: OverviewWidget(),
+                      ),
+                      Expanded(child: Center(child: AppList())),
+                    ],
                   ),
-                  Expanded(child: Center(child: AppList())),
-                ],
-              ),
-            ),
-          ),
+                ),
+              )),
         ),
       ),
     );

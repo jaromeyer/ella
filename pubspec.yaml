@@ -41,6 +41,9 @@ dependencies:
   perfect_freehand: ^1.0.4
   provider: ^6.0.5
   settings_ui: ^2.0.2
+  flutter_material_color_picker: ^1.1.0+2
+  flutter_colorpicker: ^1.0.3
+  meta: ^1.9.1
 
 dev_dependencies:
   flutter_test:

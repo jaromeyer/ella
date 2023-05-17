@@ -1,10 +1,12 @@
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../providers/settings_provider.dart';
 import '../../utils/cached_image.dart';
+import 'color_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -12,7 +14,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
       body: Consumer<Settings>(
         builder: (context, settings, child) {
           return SettingsList(
@@ -58,6 +62,41 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getTextColor() == Colors.black,
                     title: const Text(
                         'Dark text on homescreen (for bright wallpapers)'),
+                  ),
+                  SettingsTile.switchTile(
+                    onToggle: (value) {
+                      value
+                          ? showColorPicker(context,
+                              onColorSelected: (Color color) {
+                              settings.setBackgroundColor(color);
+                            }, initialColor: settings.getBackgroundColor())
+                          : settings.setBackgroundColor(Colors.transparent);
+                    },
+                    initialValue:
+                        settings.getBackgroundColor() != Colors.transparent,
+                    title: const Text('Solid Wallpaper Color'),
+                  ),
+                  CustomSettingsTile(
+                    child: Visibility(
+                      visible:
+                          settings.getBackgroundColor() != Colors.transparent,
+                      child: SettingsTile(
+                        title: const Text('Selected Color'),
+                        trailing: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: Container(
+                              margin: EdgeInsets.all(3.0),
+                              decoration: BoxDecoration(
+                                  color: settings.getBackgroundColor(),
+                                  shape: BoxShape.circle),
+                            )),
+                        onPressed: (_) => showColorPicker(context,
+                            onColorSelected: (Color color) {
+                          settings.setBackgroundColor(color);
+                        }, initialColor: settings.getBackgroundColor()),
+                      ),
+                    ),
                   ),
                 ],
               ),
