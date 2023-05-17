@@ -106,10 +106,16 @@ class _OverviewWidgetState extends State<OverviewWidget> {
             if (settings.getShowWeather())
               GestureDetector(
                 onTap: () {
-                  const AndroidIntent(
-                    action: 'action_view',
-                    data: 'https://wttr.in',
-                  ).launch();
+                  if (settings.getUseWeatherApp()) {
+                    DeviceApps.openApp(
+                      settings.getWeatherPackageName(),
+                    );
+                  } else {
+                    const AndroidIntent(
+                      action: 'action_view',
+                      data: 'https://wttr.in',
+                    ).launch();
+                  }
                 },
                 child: Text(
                   _weatherString,

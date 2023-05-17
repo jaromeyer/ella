@@ -68,7 +68,7 @@ class _AppListState extends State<AppList> {
                 );
               }
             } else {
-              return const CircularProgressIndicator(color: Colors.white);
+              return CircularProgressIndicator(color: settings.getTextColor());
             }
           },
         );
