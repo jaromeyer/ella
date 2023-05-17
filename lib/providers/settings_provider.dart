@@ -20,10 +20,16 @@ class Settings extends ChangeNotifier {
 
   bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
 
+  bool getUseWeatherApp() =>
+      _settingsBox.get('useWeatherApp', defaultValue: false);
+
   int getDrawingTimeout() =>
       _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
 
   String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
+      defaultValue: "org.lineageos.etar");
+
+  String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
       defaultValue: "org.lineageos.etar");
 
   Color getTextColor() =>
@@ -65,6 +71,11 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setUseWeatherApp(bool value) {
+    _settingsBox.put('useWeatherApp', value);
+    notifyListeners();
+  }
+
   void setDrawingTimeout(int value) {
     _settingsBox.put('drawingTimeoutMs', value);
     notifyListeners();
@@ -72,6 +83,11 @@ class Settings extends ChangeNotifier {
 
   void setCalendarPackageName(String value) {
     _settingsBox.put('calendarPackageName', value);
+    notifyListeners();
+  }
+
+  void setWeatherPackageName(String value) {
+    _settingsBox.put('weatherPackageName', value);
     notifyListeners();
   }
 

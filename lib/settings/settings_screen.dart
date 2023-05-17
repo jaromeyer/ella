@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../../providers/settings_provider.dart';
-import '../../utils/cached_image.dart';
+import '../providers/settings_provider.dart';
+import 'app_picker.dart';
+import 'color_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -14,32 +15,32 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
       body: Consumer<Settings>(
-        builder: (context, settings, child) {
+        builder: (context, settings, _) {
           return SettingsList(
             sections: [
               SettingsSection(
                 title: const Text('General'),
                 tiles: <AbstractSettingsTile>[
                   SettingsTile(
+                    title: const Text('About ella'),
+                    leading: const Icon(Icons.info_outline),
                     onPressed: (_) => showAboutDialog(
                         context: context,
-                        applicationVersion: '0.0.1',
+                        applicationVersion: '1.0.0',
                         applicationIcon: const Image(
                           image: AssetImage('assets/icon.png'),
                           height: 40,
                         ),
                         applicationLegalese: 'Licensed under the GPLv3'),
-                    leading: const Icon(Icons.info_outline),
-                    title: const Text('About ella'),
                   ),
                   SettingsTile(
+                    title: const Text('Change default launcher'),
+                    leading: const Icon(Icons.home),
                     onPressed: (_) {
                       const AndroidIntent(
-                              action: 'android.settings.HOME_SETTINGS')
-                          .launch();
+                        action: 'android.settings.HOME_SETTINGS',
+                      ).launch();
                     },
-                    leading: const Icon(Icons.home),
-                    title: const Text('Change default launcher'),
                   ),
                   SettingsTile(
                     title: const Text('Gesture timeout'),
@@ -65,34 +66,56 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('Overview'),
                 tiles: <SettingsTile>[
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowClock(value),
-                    initialValue: settings.getShowClock(),
                     title: const Text('Show clock'),
+                    initialValue: settings.getShowClock(),
+                    onToggle: (value) => settings.setShowClock(value),
                   ),
-                  if (settings.getShowClock())
-                    SettingsTile(
-                        title: const Text('(placeholder) Pick clock app')),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowDate(value),
-                    initialValue: settings.getShowDate(),
                     title: const Text('Show date'),
+                    initialValue: settings.getShowDate(),
+                    onToggle: (value) => settings.setShowDate(value),
                   ),
                   if (settings.getShowDate())
                     SettingsTile(
-                        title: const Text('(placeholder) Pick calendar app')),
+                      title: const Text('Calendar app'),
+                      trailing: Text(settings.getCalendarPackageName()),
+                      onPressed: (_) {
+                        showAppPicker(
+                          context: context,
+                          title: "Pick calendar app",
+                          onAppPicked: (app) =>
+                              settings.setCalendarPackageName(app.packageName),
+                        );
+                      },
+                    ),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowWeather(value),
-                    initialValue: settings.getShowWeather(),
                     title: const Text('Show weather'),
+                    initialValue: settings.getShowWeather(),
+                    onToggle: (value) => settings.setShowWeather(value),
                   ),
                   if (settings.getShowWeather())
+                    SettingsTile.switchTile(
+                      title: const Text('Custom weather app'),
+                      initialValue: settings.getUseWeatherApp(),
+                      onToggle: (value) => settings.setUseWeatherApp(value),
+                    ),
+                  if (settings.getShowWeather() && settings.getUseWeatherApp())
                     SettingsTile(
-                        title: const Text(
-                            '(placeholder) Configure weather format')),
+                      title: const Text('Weather app'),
+                      trailing: Text(settings.getWeatherPackageName()),
+                      onPressed: (_) {
+                        showAppPicker(
+                          context: context,
+                          title: "Pick weather app",
+                          onAppPicked: (app) =>
+                              settings.setWeatherPackageName(app.packageName),
+                        );
+                      },
+                    ),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowBattery(value),
-                    initialValue: settings.getShowBattery(),
                     title: const Text('Show battery'),
+                    initialValue: settings.getShowBattery(),
+                    onToggle: (value) => settings.setShowBattery(value),
                   ),
                 ],
               ),
@@ -100,28 +123,19 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('App list'),
                 tiles: <SettingsTile>[
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setEnableAnimations(value),
-                    initialValue: settings.getEnableAnimations(),
                     title: const Text('Enable animations'),
+                    initialValue: settings.getEnableAnimations(),
+                    onToggle: (value) => settings.setEnableAnimations(value),
                   ),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowIcons(value),
-                    initialValue: settings.getShowIcons(),
                     title: const Text('Show icons'),
+                    initialValue: settings.getShowIcons(),
+                    onToggle: (value) => settings.setShowIcons(value),
                   ),
                   SettingsTile.switchTile(
-                    onToggle: (value) => settings.setShowNames(value),
-                    initialValue: settings.getShowNames(),
                     title: const Text('Show names'),
-                  ),
-                ],
-              ),
-              SettingsSection(
-                title: const Text('Developer settings'),
-                tiles: <SettingsTile>[
-                  SettingsTile(
-                    onPressed: (_) => CachedMemoryImage.clearCache(),
-                    title: const Text('Clear icon cache'),
+                    initialValue: settings.getShowNames(),
+                    onToggle: (value) => settings.setShowNames(value),
                   ),
                 ],
               ),
