@@ -5,7 +5,6 @@ import 'package:settings_ui/settings_ui.dart';
 
 import '../providers/settings_provider.dart';
 import 'app_picker.dart';
-import 'color_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -75,43 +74,46 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getShowDate(),
                     onToggle: (value) => settings.setShowDate(value),
                   ),
-                  if (settings.getShowDate())
-                    SettingsTile(
-                      title: const Text('Calendar app'),
-                      trailing: Text(settings.getCalendarPackageName()),
-                      onPressed: (_) {
-                        showAppPicker(
-                          context: context,
-                          title: "Pick calendar app",
-                          onAppPicked: (app) =>
-                              settings.setCalendarPackageName(app.packageName),
-                        );
-                      },
-                    ),
+                  SettingsTile(
+                    title: const Text('Calendar app'),
+                    description: Text(settings.getCalendarPackageName()),
+                    trailing: const Icon(Icons.arrow_forward),
+                    enabled: settings.getShowDate(),
+                    onPressed: (_) {
+                      showAppPicker(
+                        context: context,
+                        title: "Pick calendar app",
+                        onAppPicked: (app) =>
+                            settings.setCalendarPackageName(app.packageName),
+                      );
+                    },
+                  ),
                   SettingsTile.switchTile(
                     title: const Text('Show weather'),
                     initialValue: settings.getShowWeather(),
                     onToggle: (value) => settings.setShowWeather(value),
                   ),
-                  if (settings.getShowWeather())
-                    SettingsTile.switchTile(
-                      title: const Text('Custom weather app'),
-                      initialValue: settings.getUseWeatherApp(),
-                      onToggle: (value) => settings.setUseWeatherApp(value),
-                    ),
-                  if (settings.getShowWeather() && settings.getUseWeatherApp())
-                    SettingsTile(
-                      title: const Text('Weather app'),
-                      trailing: Text(settings.getWeatherPackageName()),
-                      onPressed: (_) {
-                        showAppPicker(
-                          context: context,
-                          title: "Pick weather app",
-                          onAppPicked: (app) =>
-                              settings.setWeatherPackageName(app.packageName),
-                        );
-                      },
-                    ),
+                  SettingsTile.switchTile(
+                    title: const Text('Use custom weather app'),
+                    initialValue: settings.getUseWeatherApp(),
+                    enabled: settings.getShowWeather(),
+                    onToggle: (value) => settings.setUseWeatherApp(value),
+                  ),
+                  SettingsTile(
+                    title: const Text('Weather app'),
+                    description: Text(settings.getWeatherPackageName()),
+                    trailing: const Icon(Icons.arrow_forward),
+                    enabled: settings.getShowWeather() &&
+                        settings.getUseWeatherApp(),
+                    onPressed: (_) {
+                      showAppPicker(
+                        context: context,
+                        title: "Pick weather app",
+                        onAppPicked: (app) =>
+                            settings.setWeatherPackageName(app.packageName),
+                      );
+                    },
+                  ),
                   SettingsTile.switchTile(
                     title: const Text('Show battery'),
                     initialValue: settings.getShowBattery(),
