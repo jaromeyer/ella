@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
-void showColorPicker(BuildContext context,
-    {required ValueSetter<Color> onColorSelected,
-    Color initialColor = Colors.blue}) {
+void showColorPicker({
+  required BuildContext context,
+  required ValueSetter<Color> onColorSelected,
+  Color initialColor = Colors.blue,
+}) {
   Color pickerColor = initialColor;
   showDialog(
     context: context,
@@ -48,12 +50,10 @@ void showColorPicker(BuildContext context,
         actions: <Widget>[
           TextButton(
             child: const Text('Cancel'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () => Navigator.of(context).pop(),
           ),
           TextButton(
-            child: const Text('Set Color'),
+            child: const Text('Set color'),
             onPressed: () {
               onColorSelected(pickerColor);
               Navigator.of(context).pop();

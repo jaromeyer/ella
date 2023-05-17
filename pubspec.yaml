@@ -33,6 +33,7 @@ dependencies:
   animated_list_plus: ^0.5.0
   battery_plus: ^4.0.0
   device_apps: ^2.2.0
+  flutter_colorpicker: ^1.0.3
   google_mlkit_digital_ink_recognition: ^0.7.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -41,7 +42,6 @@ dependencies:
   perfect_freehand: ^1.0.4
   provider: ^6.0.5
   settings_ui: ^2.0.2
-  flutter_colorpicker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
 import '../../providers/settings_provider.dart';
-import 'color_picker.dart';
 import 'app_picker.dart';
+import 'color_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -55,20 +55,32 @@ class SettingsScreen extends StatelessWidget {
                         onChanged: (value) =>
                             settings.setDrawingTimeout(value.round())),
                   ),
-                  SettingsTile.switchTile(
-                    onToggle: (value) => settings
-                        .setTextColor(value ? Colors.black : Colors.white),
-                    initialValue: settings.getTextColor() == Colors.black,
-                    title: const Text(
-                        'Dark text on homescreen (for bright wallpapers)'),
+                  SettingsTile(
+                    title: const Text('Text color'),
+                    trailing: Container(
+                      height: 30,
+                      width: 30,
+                      margin: const EdgeInsets.all(3.0),
+                      decoration: BoxDecoration(
+                        color: settings.getTextColor(),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Theme.of(context).highlightColor, width: 2),
+                      ),
+                    ),
+                    onPressed: (_) => showColorPicker(
+                      context: context,
+                      onColorSelected: settings.setTextColor,
+                      initialColor: settings.getTextColor(),
+                    ),
                   ),
                   SettingsTile.switchTile(
                     onToggle: (value) {
                       if (value) {
-                        showColorPicker(context,
-                            onColorSelected: (Color color) {
-                          settings.setBackgroundColor(color);
-                        }, initialColor: settings.getBackgroundColor());
+                        showColorPicker(
+                            context: context,
+                            onColorSelected: settings.setBackgroundColor,
+                            initialColor: settings.getBackgroundColor());
                       } else {
                         settings.setBackgroundColor(Colors.transparent);
                       }
@@ -80,21 +92,23 @@ class SettingsScreen extends StatelessWidget {
                   SettingsTile(
                     enabled:
                         settings.getBackgroundColor() != Colors.transparent,
-                    title: const Text('Selected Color'),
+                    title: const Text('Background color'),
                     trailing: Container(
-                      height: 35,
-                      width: 35,
+                      height: 30,
+                      width: 30,
                       margin: const EdgeInsets.all(3.0),
                       decoration: BoxDecoration(
-                          color: settings.getBackgroundColor(),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              color: Theme.of(context).highlightColor,
-                              width: 2)),
+                        color: settings.getBackgroundColor(),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color: Theme.of(context).highlightColor, width: 2),
+                      ),
                     ),
-                    onPressed: (_) => showColorPicker(context,
-                        onColorSelected: settings.setBackgroundColor,
-                        initialColor: settings.getBackgroundColor()),
+                    onPressed: (_) => showColorPicker(
+                      context: context,
+                      onColorSelected: settings.setBackgroundColor,
+                      initialColor: settings.getBackgroundColor(),
+                    ),
                   ),
                 ],
               ),
