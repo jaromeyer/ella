@@ -3,48 +3,66 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class AppsProvider extends ChangeNotifier {
-  Future<List<Application>> _appsFuture = DeviceApps.getInstalledApplications(
-      onlyAppsWithLaunchIntent: true,
-      includeSystemApps: true,
-      includeAppIcons: true);
+  late final Future<List<Application>> _apps;
   final Box _pinnedAppsBox = Hive.box('pinnedApps');
   String _filter = '';
 
-  AppsProvider() {
-    // register change listener
-    DeviceApps.listenToAppsChanges().listen((event) {
-      _updateApps();
-    });
-  }
-
-  void _updateApps() {
-    _appsFuture = DeviceApps.getInstalledApplications(
+  Future<List<Application>> _loadApps() async {
+    List<Application> apps = await DeviceApps.getInstalledApplications(
         onlyAppsWithLaunchIntent: true,
         includeSystemApps: true,
         includeAppIcons: true);
-    notifyListeners();
+    apps.sort((Application a, Application b) =>
+        a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
+    return apps;
   }
 
-  Future<List<Application>> getFilteredApps() {
-    return _appsFuture.then((apps) {
-      if (_filter.isEmpty) {
-        apps = apps.where((app) => isPinned(app)).toList();
-      } else if (_filter.length == 1) {
-        apps = apps
-            .where((app) =>
-                app.appName.toLowerCase().startsWith(_filter.toLowerCase()))
-            .toList();
-      } else {
-        apps = apps
-            .where((app) => RegExp('\\b${_filter.toLowerCase()}')
-                .hasMatch(app.appName.toLowerCase()))
-            .toList();
+  AppsProvider() {
+    _apps = _loadApps();
+    // register change listener
+    DeviceApps.listenToAppsChanges().listen((event) async {
+      List<Application> apps = await _apps;
+      switch (event.event) {
+        case ApplicationEventType.installed:
+        case ApplicationEventType.disabled: // disabled and enabled are mixed-up
+          if (!apps.any((app) => app.packageName == event.packageName)) {
+            apps.add((await DeviceApps.getApp(event.packageName, true))!);
+          }
+          break;
+        case ApplicationEventType.updated:
+          apps.removeWhere((app) => app.packageName == event.packageName);
+          apps.add((await DeviceApps.getApp(event.packageName, true))!);
+          break;
+        case ApplicationEventType.uninstalled:
+        case ApplicationEventType.enabled: // disabled and enabled are mixed-up
+          apps.removeWhere((app) => app.packageName == event.packageName);
+          break;
+        default:
+          break;
       }
-      // sort result alphabetically
       apps.sort((Application a, Application b) =>
           a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
-      return apps;
+      notifyListeners();
     });
+  }
+
+  Future<List<Application>> getAllApps() => _apps;
+
+  Future<List<Application>> getFilteredApps() async {
+    List<Application> apps = await _apps;
+    if (_filter.isEmpty) {
+      return apps.where((app) => isPinned(app)).toList();
+    } else if (_filter.length == 1) {
+      return apps
+          .where((app) =>
+              app.appName.toLowerCase().startsWith(_filter.toLowerCase()))
+          .toList();
+    } else {
+      return apps
+          .where((app) => RegExp('\\b${_filter.toLowerCase()}')
+              .hasMatch(app.appName.toLowerCase()))
+          .toList();
+    }
   }
 
   String getFilter() {
