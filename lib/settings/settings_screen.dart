@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-import '../providers/settings_provider.dart';
+import '../../providers/settings_provider.dart';
+import 'color_picker.dart';
 import 'app_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -12,7 +13,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(
+        title: const Text('Settings'),
+      ),
       body: Consumer<Settings>(
         builder: (context, settings, _) {
           return SettingsList(
@@ -58,6 +61,40 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getTextColor() == Colors.black,
                     title: const Text(
                         'Dark text on homescreen (for bright wallpapers)'),
+                  ),
+                  SettingsTile.switchTile(
+                    onToggle: (value) {
+                      if (value) {
+                        showColorPicker(context,
+                            onColorSelected: (Color color) {
+                          settings.setBackgroundColor(color);
+                        }, initialColor: settings.getBackgroundColor());
+                      } else {
+                        settings.setBackgroundColor(Colors.transparent);
+                      }
+                    },
+                    initialValue:
+                        settings.getBackgroundColor() != Colors.transparent,
+                    title: const Text('Use solid background color'),
+                  ),
+                  SettingsTile(
+                    enabled:
+                        settings.getBackgroundColor() != Colors.transparent,
+                    title: const Text('Selected Color'),
+                    trailing: Container(
+                      height: 35,
+                      width: 35,
+                      margin: const EdgeInsets.all(3.0),
+                      decoration: BoxDecoration(
+                          color: settings.getBackgroundColor(),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                              color: Theme.of(context).highlightColor,
+                              width: 2)),
+                    ),
+                    onPressed: (_) => showColorPicker(context,
+                        onColorSelected: settings.setBackgroundColor,
+                        initialColor: settings.getBackgroundColor()),
                   ),
                 ],
               ),
