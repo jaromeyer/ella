@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:provider/provider.dart';
-import 'package:ella/providers/settings_provider.dart';
-import 'package:flutter/src/widgets/basic.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 void showColorPicker(BuildContext context,
     {required ValueSetter<Color> onColorSelected,
@@ -15,7 +11,7 @@ void showColorPicker(BuildContext context,
       BuildContext context,
     ) {
       return AlertDialog(
-        contentPadding: const EdgeInsets.all(0),
+        contentPadding: EdgeInsets.zero,
         content: SizedBox(
           height: 520,
           child: DefaultTabController(
@@ -38,15 +34,11 @@ void showColorPicker(BuildContext context,
                 children: [
                   BlockPicker(
                     pickerColor: pickerColor,
-                    onColorChanged: (Color color) {
-                      pickerColor = color;
-                    },
+                    onColorChanged: (Color color) => pickerColor = color,
                   ),
                   ColorPicker(
                     pickerColor: pickerColor,
-                    onColorChanged: (Color color) {
-                      pickerColor = color;
-                    },
+                    onColorChanged: (Color color) => pickerColor = color,
                   )
                 ],
               ),
@@ -63,7 +55,7 @@ void showColorPicker(BuildContext context,
           TextButton(
             child: const Text('Set Color'),
             onPressed: () {
-              onColorSelected.call(pickerColor);
+              onColorSelected(pickerColor);
               Navigator.of(context).pop();
             },
           ),

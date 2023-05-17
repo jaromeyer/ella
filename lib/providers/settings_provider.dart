@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:hive/hive.dart';
 
 class Settings extends ChangeNotifier {
   final Box _settingsBox = Hive.box('settings');
 
   // getters
-  Color getBackgroundColor() =>
-      Color(_settingsBox.get('bcolor', defaultValue: Colors.transparent.value));
+  Color getBackgroundColor() => Color(_settingsBox.get('backgroundColor',
+      defaultValue: Colors.transparent.value));
 
   bool getEnableAnimations() =>
       _settingsBox.get('enableAnimations', defaultValue: true);
@@ -41,7 +40,7 @@ class Settings extends ChangeNotifier {
 
   // setters
   void setBackgroundColor(Color color) {
-    _settingsBox.put('bcolor', color.value);
+    _settingsBox.put('backgroundColor', color.value);
     notifyListeners();
   }
 
