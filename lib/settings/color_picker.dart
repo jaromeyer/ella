@@ -33,8 +33,11 @@ void showColorPicker({
                 ),
               ),
               body: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   BlockPicker(
+                    availableColors:
+                        [Colors.white, Colors.black] + Colors.primaries,
                     pickerColor: pickerColor,
                     onColorChanged: (Color color) => pickerColor = color,
                   ),

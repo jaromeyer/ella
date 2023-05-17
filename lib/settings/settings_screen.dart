@@ -80,7 +80,10 @@ class SettingsScreen extends StatelessWidget {
                         showColorPicker(
                             context: context,
                             onColorSelected: settings.setBackgroundColor,
-                            initialColor: settings.getBackgroundColor());
+                            initialColor: settings.getBackgroundColor() ==
+                                    Colors.transparent
+                                ? Colors.blue
+                                : settings.getBackgroundColor());
                       } else {
                         settings.setBackgroundColor(Colors.transparent);
                       }
