@@ -19,6 +19,7 @@ class AppTile extends StatelessWidget {
         var textColor = settings.getTextColor();
         return ListTile(
           onTap: () {
+            Navigator.pop(context);
             DeviceApps.openApp(app.packageName);
             context.read<AppsProvider>().resetFilter();
           },
