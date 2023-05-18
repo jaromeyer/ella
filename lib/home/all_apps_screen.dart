@@ -74,38 +74,33 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
                 },
               ),
             ),
-            body: FutureBuilder(
-              future: (appsProvider.getFilter() == '')
-                  ? appsProvider.getAllApps()
-                  : appsProvider.getFilteredApps(),
-              builder: (_, AsyncSnapshot<List<Application>> snapshot) {
-                if (snapshot.hasData) {
-                  List<Application> apps = snapshot.data!;
-                  if (apps.isNotEmpty) {
-                    return Scrollbar(
-                      thickness: 1.5,
-                      child: ListView(
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        children: [for (Application app in apps) AppTile(app)],
-                      ),
-                    );
-                  } else {
-                    return Align(
-                      alignment: const Alignment(0.0, -0.9),
-                      child: Text(
-                        'No apps found',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w300,
-                          color: settings.getTextColor(),
-                        ),
-                      ),
-                    );
-                  }
+            body: Builder(
+              builder: (_) {
+                List<Application> apps = (appsProvider.getFilter() == '')
+                    ? appsProvider.getAllApps()
+                    : appsProvider.getFilteredApps();
+
+                if (appsProvider.getFilter() == '' || apps.isNotEmpty) {
+                  return Scrollbar(
+                    thickness: 1.5,
+                    child: ListView(
+                      shrinkWrap: true,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      children: [for (Application app in apps) AppTile(app)],
+                    ),
+                  );
                 } else {
-                  return CircularProgressIndicator(
-                      color: settings.getTextColor());
+                  return Align(
+                    alignment: const Alignment(0.0, -0.9),
+                    child: Text(
+                      'No apps found',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w300,
+                        color: settings.getTextColor(),
+                      ),
+                    ),
+                  );
                 }
               },
             ),
