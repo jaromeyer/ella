@@ -8,14 +8,16 @@ import '../utils/cached_image.dart';
 
 void showActionSheet(BuildContext context, {Application? app}) {
   List<Widget> tiles = [
-    ListTile(
-      enabled: ModalRoute.of(context)!.settings.name != "/allApps",
-      onTap: () {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, '/allApps');
-      },
-      leading: const Icon(Icons.apps),
-      title: const Text('Show all apps'),
+    Visibility(
+      visible: ModalRoute.of(context)!.settings.name != "/allApps",
+      child: ListTile(
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.pushNamed(context, '/allApps');
+        },
+        leading: const Icon(Icons.apps),
+        title: const Text('Show all apps'),
+      ),
     ),
     ListTile(
       onTap: () {
