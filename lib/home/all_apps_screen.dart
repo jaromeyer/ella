@@ -17,16 +17,6 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
   final TextEditingController _controller = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var appsProvider = Provider.of<AppsProvider>(context, listen: false);
-      appsProvider.resetFilter();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
@@ -49,9 +39,9 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
                   fontSize: 30,
                   fontWeight: FontWeight.w300,
                 ),
-                autofocus: true,
                 cursorColor: settings.getTextColor(),
                 decoration: InputDecoration(
+                  hintText: 'Search App...',
                   contentPadding: const EdgeInsets.all(0.0),
                   focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: settings.getTextColor())),
@@ -71,6 +61,28 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
                 ),
                 onChanged: (value) {
                   appsProvider.setFilter(value);
+
+                  if (appsProvider.getFilteredApps().length == 1) {
+                    Navigator.pop(context);
+                    DeviceApps.openApp(
+                        appsProvider.getFilteredApps()[0].packageName);
+                    return;
+                  }
+
+                  for (int i = 0;
+                      i < appsProvider.getFilteredApps().length;
+                      i++) {
+                    Navigator.pop(context);
+                    if (appsProvider
+                            .getFilteredApps()[i]
+                            .appName
+                            .toLowerCase() ==
+                        value.toLowerCase()) {
+                      DeviceApps.openApp(
+                          appsProvider.getFilteredApps()[i].packageName);
+                      return;
+                    }
+                  }
                 },
               ),
             ),
