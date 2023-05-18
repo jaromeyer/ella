@@ -3,62 +3,61 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class AppsProvider extends ChangeNotifier {
-  late final Future<List<Application>> _apps;
+  static late final List<Application> _apps;
   final Box _pinnedAppsBox = Hive.box('pinnedApps');
   String _filter = '';
 
-  Future<List<Application>> _loadApps() async {
-    List<Application> apps = await DeviceApps.getInstalledApplications(
+  static Future<void> initialize() async {
+    _apps = await DeviceApps.getInstalledApplications(
         onlyAppsWithLaunchIntent: true,
         includeSystemApps: true,
         includeAppIcons: true);
-    apps.sort((Application a, Application b) =>
+    _apps.sort((Application a, Application b) =>
         a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
-    return apps;
   }
 
   AppsProvider() {
-    _apps = _loadApps();
-    // register change listener
+    // register change listener to update _apps
     DeviceApps.listenToAppsChanges().listen((event) async {
-      List<Application> apps = await _apps;
+      String packageName = event.packageName;
       switch (event.event) {
         case ApplicationEventType.installed:
         case ApplicationEventType.disabled: // disabled and enabled are mixed-up
-          if (!apps.any((app) => app.packageName == event.packageName)) {
-            apps.add((await DeviceApps.getApp(event.packageName, true))!);
+          if (!_apps.any((app) => app.packageName == packageName)) {
+            _apps.add((await DeviceApps.getApp(packageName, true))!);
           }
           break;
         case ApplicationEventType.updated:
-          apps.removeWhere((app) => app.packageName == event.packageName);
-          apps.add((await DeviceApps.getApp(event.packageName, true))!);
+          _apps.removeWhere((app) => app.packageName == event.packageName);
+          _apps.add((await DeviceApps.getApp(packageName, true))!);
           break;
         case ApplicationEventType.uninstalled:
         case ApplicationEventType.enabled: // disabled and enabled are mixed-up
-          apps.removeWhere((app) => app.packageName == event.packageName);
-          break;
-        default:
+          _apps.removeWhere((app) => app.packageName == packageName);
+          // unpin app
+          if (_pinnedAppsBox.containsKey(packageName)) {
+            _pinnedAppsBox.delete(packageName);
+          }
           break;
       }
-      apps.sort((Application a, Application b) =>
+      _apps.sort((Application a, Application b) =>
           a.appName.toLowerCase().compareTo(b.appName.toLowerCase()));
       notifyListeners();
     });
   }
 
-  Future<List<Application>> getAllApps() => _apps;
+  List<Application> getAllApps() => _apps;
 
-  Future<List<Application>> getFilteredApps() async {
-    List<Application> apps = await _apps;
+  List<Application> getFilteredApps() {
     if (_filter.isEmpty) {
-      return apps.where((app) => isPinned(app)).toList();
+      return _apps.where((app) => isPinned(app)).toList();
     } else if (_filter.length == 1) {
-      return apps
+      return _apps
           .where((app) =>
               app.appName.toLowerCase().startsWith(_filter.toLowerCase()))
           .toList();
     } else {
-      return apps
+      return _apps
           .where((app) => RegExp('\\b${_filter.toLowerCase()}')
               .hasMatch(app.appName.toLowerCase()))
           .toList();

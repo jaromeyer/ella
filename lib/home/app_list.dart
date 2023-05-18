@@ -19,59 +19,49 @@ class _AppListState extends State<AppList> {
   @override
   Widget build(BuildContext context) {
     return Consumer2<Settings, AppsProvider>(
-      builder: (context, settings, appsProvider, child) {
-        return FutureBuilder(
-          future: appsProvider.getFilteredApps(),
-          builder: (_, AsyncSnapshot<List<Application>> snapshot) {
-            if (snapshot.hasData) {
-              // future has returned list: we can use it
-              List<Application> apps = snapshot.data!;
-              if (apps.isNotEmpty) {
-                // app list is non empty: return list
-                if (settings.getEnableAnimations()) {
-                  // animations disabled: return ImplicitlyAnimatedList
-                  return ImplicitlyAnimatedList<Application>(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    items: apps,
-                    areItemsTheSame: (a, b) => a.packageName == b.packageName,
-                    itemBuilder: (_, animation, app, __) {
-                      return SizeFadeTransition(
-                        sizeFraction: 0.6,
-                        curve: Curves.easeInOut,
-                        animation: animation,
-                        child: AppTile(app),
-                      );
-                    },
-                  );
-                } else {
-                  // animations disabled: return normal ListView
-                  return ListView(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [for (Application app in apps) AppTile(app)],
-                  );
-                }
-              } else {
-                // app list is empty: return text message
-                String filter = appsProvider.getFilter();
-                return Text(
-                  filter.isEmpty
-                      ? 'Add favorite apps to be displayed here'
-                      : 'No apps found for "$filter"',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w300,
-                    color: settings.getTextColor(),
-                  ),
+      builder: (context, settings, appsProvider, _) {
+        List<Application> apps = appsProvider.getFilteredApps();
+        if (apps.isNotEmpty) {
+          // app list is non empty: return list
+          if (settings.getEnableAnimations()) {
+            // animations disabled: return ImplicitlyAnimatedList
+            return ImplicitlyAnimatedList<Application>(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              items: apps,
+              areItemsTheSame: (a, b) => a.packageName == b.packageName,
+              itemBuilder: (_, animation, app, __) {
+                return SizeFadeTransition(
+                  sizeFraction: 0.6,
+                  curve: Curves.easeInOut,
+                  animation: animation,
+                  child: AppTile(app),
                 );
-              }
-            } else {
-              return CircularProgressIndicator(color: settings.getTextColor());
-            }
-          },
-        );
+              },
+            );
+          } else {
+            // animations disabled: return normal ListView
+            return ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [for (Application app in apps) AppTile(app)],
+            );
+          }
+        } else {
+          // app list is empty: return text message
+          String filter = appsProvider.getFilter();
+          return Text(
+            filter.isEmpty
+                ? 'Add favorite apps to be displayed here'
+                : 'No apps found for "$filter"',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w300,
+              color: settings.getTextColor(),
+            ),
+          );
+        }
       },
     );
   }

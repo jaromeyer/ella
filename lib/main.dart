@@ -26,6 +26,8 @@ Future<void> main() async {
   await Hive.openBox('settings');
   await Hive.openBox('pinnedApps');
 
+  await AppsProvider.initialize();
+
   // make sure ink recognition model is downloaded
   DigitalInkRecognizerModelManager modelManager =
       DigitalInkRecognizerModelManager();
