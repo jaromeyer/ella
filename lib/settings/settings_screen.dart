@@ -74,6 +74,17 @@ class SettingsScreen extends StatelessWidget {
                       initialColor: settings.getTextColor(),
                     ),
                   ),
+                  SettingsTile(
+                    title: const Text('Text Size'),
+                    value: Slider(
+                        value: settings.getTextSize(),
+                        min: 20,
+                        max: 40,
+                        divisions: 20,
+                        label: settings.getTextSize().toInt().toString(),
+                        onChanged: (value) =>
+                            settings.setTextSize(value.toInt())),
+                  ),
                   SettingsTile.switchTile(
                     onToggle: (value) {
                       if (value) {
