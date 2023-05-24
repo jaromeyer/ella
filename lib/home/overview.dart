@@ -32,7 +32,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     // get weather information
     try {
       http.Response response =
-          await http.get(Uri.parse('https://wttr.in/?format=%c%t'));
+          await http.get(Uri.parse('https://wttr.in/?format=%c%t\n%w'));
       _weatherString = response.body;
     } on Exception {
       _weatherString = 'Not available';
@@ -93,6 +93,10 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                   style: TextStyle(fontSize: 16, color: textColor),
                 ),
               ),
+            Text(
+              "⏰ Thu 7:35",
+              style: TextStyle(fontSize: 16, color: textColor),
+            ),
             if (settings.getShowWeather())
               GestureDetector(
                 onTap: () {
