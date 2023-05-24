@@ -193,6 +193,19 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getShowNames(),
                     onToggle: (value) => settings.setShowNames(value),
                   ),
+                  SettingsTile(
+                    title: const Text('Scale Factor'),
+                    value: Slider(
+                        value: settings.getScalingFactor(),
+                        min: 0.5,
+                        max: 1.5,
+                        divisions: 10,
+                        label: settings.getScalingFactor().toString(),
+                        onChanged: (value) => settings.setScalingFactor(value)),
+                  ),
+                  SettingsTile(
+                    title: const Text(''),
+                  ),
                 ],
               ),
             ],
