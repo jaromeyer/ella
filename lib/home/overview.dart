@@ -4,6 +4,7 @@ import 'package:android_intent_plus/android_intent.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -18,59 +19,47 @@ class OverviewWidget extends StatefulWidget {
 }
 
 class _OverviewWidgetState extends State<OverviewWidget> {
-  DateTime _dateTimeNow = DateTime.now();
+  final BroadcastReceiver _broadcastReceiver = BroadcastReceiver(
+    names: ["android.intent.action.TIME_TICK"],
+  );
+  late final StreamSubscription<BatteryState> _batteryListener;
   String _weatherString = 'Not available';
   int _batteryLevel = 0;
   bool _isCharging = false;
 
-  Timer? _oneShotTimer;
-  Timer? _periodicTimer;
-
-  void _registerPeriodicTimer(void Function() callback) {
-    var now = DateTime.now();
-    var nextMinute =
-        DateTime(now.year, now.month, now.day, now.hour, now.minute + 1);
-    // timer to register periodic timer exactly at the next minute
-    _oneShotTimer = Timer(nextMinute.difference(now), () {
-      _periodicTimer =
-          Timer.periodic(const Duration(minutes: 1), (_) => callback());
-      callback(); // execute callback the first time
-    });
-  }
-
   void _update() async {
-    // workaround for timer calling setState on disposed widget
-    if (!mounted) return;
     _batteryLevel = await Battery().batteryLevel;
-    setState(() => _dateTimeNow = DateTime.now());
     // get weather information
     try {
       http.Response response =
           await http.get(Uri.parse('https://wttr.in/?format=%c%t'));
-      setState(() => _weatherString = response.body);
+      _weatherString = response.body;
     } on Exception {
-      setState(() => _weatherString = 'Not available');
+      _weatherString = 'Not available';
     }
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    _update(); // initialize values
-    _registerPeriodicTimer(_update);
-    // register battery state listener
-    Battery().onBatteryStateChanged.listen((BatteryState state) {
-      if (mounted) {
-        setState(() => _isCharging = state == BatteryState.charging);
+    _update();
+    _broadcastReceiver.messages.listen((event) {
+      if (event.name == "android.intent.action.TIME_TICK") {
+        _update();
       }
+    });
+    _broadcastReceiver.start();
+    // register battery state listener
+    _batteryListener = Battery().onBatteryStateChanged.listen((state) {
+      setState(() => _isCharging = state == BatteryState.charging);
     });
   }
 
   @override
   void dispose() {
-    // make sure timers are correctly stopped
-    _oneShotTimer?.cancel();
-    _periodicTimer?.cancel();
+    _broadcastReceiver.stop;
+    _batteryListener.cancel();
     super.dispose();
   }
 
@@ -90,7 +79,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                   ).launch();
                 },
                 child: Text(
-                  DateFormat('HH:mm').format(_dateTimeNow),
+                  DateFormat('HH:mm').format(DateTime.now()),
                   style: TextStyle(fontSize: 42, color: textColor),
                 ),
               ),
@@ -100,7 +89,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                   settings.getCalendarPackageName(),
                 ),
                 child: Text(
-                  DateFormat.MMMEd().format(_dateTimeNow),
+                  DateFormat.MMMEd().format(DateTime.now()),
                   style: TextStyle(fontSize: 16, color: textColor),
                 ),
               ),
