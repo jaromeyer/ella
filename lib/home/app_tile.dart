@@ -29,7 +29,7 @@ class AppTile extends StatelessWidget {
           onLongPress: () => showActionSheet(context, app: app),
           leading: settings.getShowIcons()
               ? CachedMemoryImage(
-                  width: settings.getScalingFactor() + 10,
+                  width: 30 * settings.getScalingFactor() + 10,
                   bytes: (app as ApplicationWithIcon).icon,
                   identifier: ValueKey(app),
                 )
@@ -38,7 +38,7 @@ class AppTile extends StatelessWidget {
               ? Text(
                   app.appName,
                   style: TextStyle(
-                    fontSize: settings.getScalingFactor(),
+                    fontSize: 30 * settings.getScalingFactor(),
                     fontWeight: FontWeight.w300,
                     color: textColor,
                   ),
