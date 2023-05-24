@@ -13,7 +13,7 @@ void showAppPicker({
   showDialog<void>(
     context: context,
     builder: (BuildContext context) {
-      List<Application> apps = context.read<AppsProvider>().getAllApps();
+      List<Application> apps = context.read<AppsProvider>().getApps();
       return AlertDialog(
         title: Text(title),
         contentPadding: const EdgeInsets.only(top: 24),

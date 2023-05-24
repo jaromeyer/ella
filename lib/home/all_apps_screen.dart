@@ -61,10 +61,7 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
           ),
           body: Builder(
             builder: (_) {
-              List<Application> apps = (_filter.isEmpty)
-                  ? appsProvider.getAllApps()
-                  : appsProvider.getFilteredApps(_filter);
-
+              List<Application> apps = appsProvider.getApps(filter: _filter);
               if (apps.isNotEmpty) {
                 return Scrollbar(
                   thickness: 1.5,

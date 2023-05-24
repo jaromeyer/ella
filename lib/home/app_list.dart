@@ -21,7 +21,9 @@ class _AppListState extends State<AppList> {
   Widget build(BuildContext context) {
     return Consumer2<Settings, AppsProvider>(
       builder: (context, settings, appsProvider, _) {
-        List<Application> apps = appsProvider.getFilteredApps(widget.filter);
+        List<Application> apps = widget.filter.isEmpty
+            ? appsProvider.getPinnedApps()
+            : appsProvider.getApps(filter: widget.filter);
         if (apps.isNotEmpty) {
           // app list is non empty: return list
           if (settings.getEnableAnimations()) {

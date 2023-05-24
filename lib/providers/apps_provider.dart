@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class AppsProvider extends ChangeNotifier {
-  static late final SplayTreeSet<Application> _apps;
+  static late final Set<Application> _apps;
   final Box _pinnedAppsBox = Hive.box('pinnedApps');
 
   static Future<void> initialize() async {
@@ -39,14 +39,12 @@ class AppsProvider extends ChangeNotifier {
     });
   }
 
-  List<Application> getAllApps() => _apps.toList();
-
   List<Application> getPinnedApps() =>
       _apps.where((app) => isPinned(app)).toList();
 
-  List<Application> getFilteredApps(String filter) {
+  List<Application> getApps({String filter = ""}) {
     if (filter.isEmpty) {
-      return getPinnedApps();
+      return _apps.toList();
     } else if (filter.length == 1) {
       return _apps
           .where((app) =>
