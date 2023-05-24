@@ -23,8 +23,8 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   int _batteryLevel = 0;
   bool _isCharging = false;
 
-  late final Timer? _oneShotTimer;
-  late final Timer? _periodicTimer;
+  Timer? _oneShotTimer;
+  Timer? _periodicTimer;
 
   void _registerPeriodicTimer(void Function() callback) {
     var now = DateTime.now();
@@ -60,8 +60,9 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     _registerPeriodicTimer(_update);
     // register battery state listener
     Battery().onBatteryStateChanged.listen((BatteryState state) {
-      _isCharging = state == BatteryState.charging;
-      if (mounted) setState(() {});
+      if (mounted) {
+        setState(() => _isCharging = state == BatteryState.charging);
+      }
     });
   }
 
