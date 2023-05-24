@@ -35,7 +35,8 @@ class Settings extends ChangeNotifier {
   String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
       defaultValue: "org.lineageos.etar");
 
-  double getTextSize() => _settingsBox.get('textSize', defaultValue: 30.0);
+  double getScalingFactor() =>
+      _settingsBox.get('scalingFactor', defaultValue: 30.0);
 
   Color getTextColor() =>
       Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
@@ -101,8 +102,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTextSize(int size) {
-    _settingsBox.put('textSize', size.toDouble());
+  void setScalingFactor(int size) {
+    _settingsBox.put('scalingFactor', size.toDouble());
     notifyListeners();
   }
 
