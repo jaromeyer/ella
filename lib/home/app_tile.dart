@@ -15,9 +15,11 @@ class AppTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<Settings>(
       builder: (context, settings, _) {
-        var textColor = settings.getTextColor();
         return ListTile(
-          onTap: () => DeviceApps.openApp(app.packageName),
+          onTap: () {
+            Navigator.popUntil(context, (route) => route.settings.name == "/");
+            DeviceApps.openApp(app.packageName);
+          },
           onLongPress: () => showActionSheet(context, app: app),
           leading: settings.getShowIcons()
               ? CachedMemoryImage(
@@ -32,7 +34,7 @@ class AppTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 30 * settings.getScalingFactor(),
                     fontWeight: FontWeight.w300,
-                    color: textColor,
+                    color: settings.getTextColor(),
                   ),
                 )
               : null,
