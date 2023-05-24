@@ -36,7 +36,7 @@ class Settings extends ChangeNotifier {
       defaultValue: "org.lineageos.etar");
 
   double getScalingFactor() =>
-      _settingsBox.get('scalingFactor', defaultValue: 30.0);
+      _settingsBox.get('scalingFactor', defaultValue: 1.0);
 
   Color getTextColor() =>
       Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
@@ -102,8 +102,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setScalingFactor(int size) {
-    _settingsBox.put('scalingFactor', size.toDouble());
+  void setScalingFactor(double value) {
+    _settingsBox.put('scalingFactor', value);
     notifyListeners();
   }
 

@@ -74,18 +74,6 @@ class SettingsScreen extends StatelessWidget {
                       initialColor: settings.getTextColor(),
                     ),
                   ),
-                  SettingsTile(
-                    title: const Text('Scale Factor'),
-                    value: Slider(
-                        value: ((settings.getScalingFactor() / 30) * 100),
-                        min: 50,
-                        max: 150,
-                        divisions: 10,
-                        label:
-                            '${((settings.getScalingFactor() / 30) * 100).toInt().toString()}%',
-                        onChanged: (value) => settings
-                            .setScalingFactor((30 * value / 100).toInt())),
-                  ),
                   SettingsTile.switchTile(
                     onToggle: (value) {
                       if (value) {
@@ -204,6 +192,19 @@ class SettingsScreen extends StatelessWidget {
                     title: const Text('Show names'),
                     initialValue: settings.getShowNames(),
                     onToggle: (value) => settings.setShowNames(value),
+                  ),
+                  SettingsTile(
+                    title: const Text('Scale Factor'),
+                    value: Slider(
+                        value: settings.getScalingFactor(),
+                        min: 0.5,
+                        max: 1.5,
+                        divisions: 10,
+                        label: settings.getScalingFactor().toString(),
+                        onChanged: (value) => settings.setScalingFactor(value)),
+                  ),
+                  SettingsTile(
+                    title: const Text(''),
                   ),
                 ],
               ),
