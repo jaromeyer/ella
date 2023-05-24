@@ -20,7 +20,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
-  bool _wasPaused = false;
   String _filter = "";
 
   final DigitalInkRecognizer digitalInkRecognizer =
@@ -53,11 +52,7 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
-      _wasPaused = true;
-    } else if (state == AppLifecycleState.resumed && _wasPaused) {
-      _wasPaused = false;
       setState(() => _filter = "");
-      // start animation when returning from another app
       _controller.value = 0.7;
       _controller.animateTo(1);
     }
