@@ -2,7 +2,6 @@ import 'package:device_apps/device_apps.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/apps_provider.dart';
 import '../providers/settings_provider.dart';
 import '../utils/cached_image.dart';
 import 'action_sheet.dart';
@@ -18,11 +17,7 @@ class AppTile extends StatelessWidget {
       builder: (context, settings, _) {
         var textColor = settings.getTextColor();
         return ListTile(
-          onTap: () {
-            Navigator.pop(context);
-            DeviceApps.openApp(app.packageName);
-            context.read<AppsProvider>().resetFilter();
-          },
+          onTap: () => DeviceApps.openApp(app.packageName),
           onLongPress: () => showActionSheet(context, app: app),
           leading: settings.getShowIcons()
               ? CachedMemoryImage(

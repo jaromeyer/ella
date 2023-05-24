@@ -16,7 +16,7 @@ void showActionSheet(BuildContext context, {Application? app}) {
           Navigator.pushNamed(context, '/allApps');
         },
         leading: const Icon(Icons.apps),
-        title: const Text('Show all apps'),
+        title: const Text('All apps'),
       ),
     ),
     ListTile(
@@ -63,7 +63,6 @@ void showActionSheet(BuildContext context, {Application? app}) {
             appsProvider.unpinApp(app);
           } else {
             appsProvider.pinApp(app);
-            appsProvider.resetFilter(); // go "home"
           }
           Navigator.pop(context);
         },
@@ -100,9 +99,7 @@ void showActionSheet(BuildContext context, {Application? app}) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
     ),
     builder: (context) {
-      return Wrap(
-        children: tiles,
-      );
+      return Wrap(children: tiles);
     },
   );
 }

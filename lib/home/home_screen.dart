@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/apps_provider.dart';
 import 'action_sheet.dart';
 import 'app_list.dart';
 import 'drawing_overlay.dart';
@@ -22,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   bool _wasPaused = false;
+  String _filter = "";
 
   final DigitalInkRecognizer digitalInkRecognizer =
       DigitalInkRecognizer(languageCode: 'de');
@@ -56,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen>
       _wasPaused = true;
     } else if (state == AppLifecycleState.resumed && _wasPaused) {
       _wasPaused = false;
+      setState(() => _filter = "");
       // start animation when returning from another app
       _controller.value = 0.7;
       _controller.animateTo(1);
@@ -71,15 +72,17 @@ class _HomeScreenState extends State<HomeScreen>
         prefix == '1' && candidates.any((c) => c.text == '|')) {
       prefix = 'i';
     }
-    if (mounted) context.read<AppsProvider>().setFilter(prefix);
+    if (mounted) {
+      setState(() => _filter = prefix);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // go "home" when back gesture received
+    // show pinned apps when going back
     return WillPopScope(
       onWillPop: () {
-        context.read<AppsProvider>().resetFilter();
+        setState(() => _filter = "");
         return Future.value(false);
       },
       child: GestureDetector(
@@ -94,14 +97,14 @@ class _HomeScreenState extends State<HomeScreen>
               child: Consumer<Settings>(
                 builder: (context, settings, child) => Scaffold(
                   backgroundColor: settings.getBackgroundColor(),
-                  body: const Column(
+                  body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
                         child: OverviewWidget(),
                       ),
-                      Expanded(child: Center(child: AppList())),
+                      Expanded(child: Center(child: AppList(filter: _filter))),
                     ],
                   ),
                 ),

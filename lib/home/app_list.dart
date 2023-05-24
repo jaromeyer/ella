@@ -9,7 +9,8 @@ import '../providers/settings_provider.dart';
 import 'app_tile.dart';
 
 class AppList extends StatefulWidget {
-  const AppList({Key? key}) : super(key: key);
+  const AppList({Key? key, required this.filter}) : super(key: key);
+  final String filter;
 
   @override
   State<AppList> createState() => _AppListState();
@@ -20,7 +21,7 @@ class _AppListState extends State<AppList> {
   Widget build(BuildContext context) {
     return Consumer2<Settings, AppsProvider>(
       builder: (context, settings, appsProvider, _) {
-        List<Application> apps = appsProvider.getFilteredApps();
+        List<Application> apps = appsProvider.getFilteredApps(widget.filter);
         if (apps.isNotEmpty) {
           // app list is non empty: return list
           if (settings.getEnableAnimations()) {
@@ -49,11 +50,10 @@ class _AppListState extends State<AppList> {
           }
         } else {
           // app list is empty: return text message
-          String filter = appsProvider.getFilter();
           return Text(
-            filter.isEmpty
+            widget.filter.isEmpty
                 ? 'Add favorite apps to be displayed here'
-                : 'No apps found for "$filter"',
+                : 'No apps found for "${widget.filter}"',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 30,
