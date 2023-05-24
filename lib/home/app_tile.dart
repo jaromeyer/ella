@@ -20,14 +20,16 @@ class AppTile extends StatelessWidget {
         return ListTile(
           dense: true,
           onTap: () {
-            Navigator.pop(context);
+            if (ModalRoute.of(context)!.settings.name == "/allApps") {
+              Navigator.pop(context);
+            }
             DeviceApps.openApp(app.packageName);
             context.read<AppsProvider>().resetFilter();
           },
           onLongPress: () => showActionSheet(context, app: app),
           leading: settings.getShowIcons()
               ? CachedMemoryImage(
-                  width: settings.getTextSize() + 10,
+                  width: settings.getScalingFactor() + 10,
                   bytes: (app as ApplicationWithIcon).icon,
                   identifier: ValueKey(app),
                 )
@@ -36,7 +38,7 @@ class AppTile extends StatelessWidget {
               ? Text(
                   app.appName,
                   style: TextStyle(
-                    fontSize: settings.getTextSize(),
+                    fontSize: settings.getScalingFactor(),
                     fontWeight: FontWeight.w300,
                     color: textColor,
                   ),

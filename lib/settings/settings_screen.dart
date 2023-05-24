@@ -75,15 +75,16 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ),
                   SettingsTile(
-                    title: const Text('Text Size'),
+                    title: const Text('Scale Factor'),
                     value: Slider(
-                        value: settings.getTextSize(),
-                        min: 20,
-                        max: 40,
-                        divisions: 20,
-                        label: settings.getTextSize().toInt().toString(),
-                        onChanged: (value) =>
-                            settings.setTextSize(value.toInt())),
+                        value: ((settings.getScalingFactor() / 30) * 100),
+                        min: 50,
+                        max: 150,
+                        divisions: 10,
+                        label:
+                            '${((settings.getScalingFactor() / 30) * 100).toInt().toString()}%',
+                        onChanged: (value) => settings
+                            .setScalingFactor((30 * value / 100).toInt())),
                   ),
                   SettingsTile.switchTile(
                     onToggle: (value) {
