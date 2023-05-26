@@ -193,6 +193,11 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getShowNames(),
                     onToggle: (value) => settings.setShowNames(value),
                   ),
+                  SettingsTile.switchTile(
+                    title: const Text('Dense view'),
+                    initialValue: settings.getDensity(),
+                    onToggle: (value) => settings.setDensity(value),
+                  ),
                   SettingsTile(
                     title: const Text('Scale Factor'),
                     value: Slider(

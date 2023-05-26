@@ -28,6 +28,7 @@ class AppTile extends StatelessWidget {
                   identifier: ValueKey(app),
                 )
               : null,
+          dense: settings.getDensity(),
           title: settings.getShowNames()
               ? Text(
                   app.appName,

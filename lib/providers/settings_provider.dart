@@ -41,6 +41,8 @@ class Settings extends ChangeNotifier {
   Color getTextColor() =>
       Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
 
+  bool getDensity() => _settingsBox.get('density', defaultValue: false);
+
   // setters
   void setBackgroundColor(Color color) {
     _settingsBox.put('backgroundColor', color.value);
@@ -109,6 +111,11 @@ class Settings extends ChangeNotifier {
 
   void setTextColor(Color color) {
     _settingsBox.put('textColor', color.value);
+    notifyListeners();
+  }
+
+  void setDensity(bool value) {
+    _settingsBox.put('density', value);
     notifyListeners();
   }
 }
