@@ -8,13 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 
 import android.content.Context
 import android.content.ContextWrapper
-import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
 import android.app.AlarmManager
-import android.provider.AlarmClock
-import java.util.Date
 
 
 class MainActivity : FlutterActivity() {
