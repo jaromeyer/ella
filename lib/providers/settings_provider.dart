@@ -13,6 +13,9 @@ class Settings extends ChangeNotifier {
 
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
 
+  bool getShowNextAlarm() =>
+      _settingsBox.get('showNextAlarm', defaultValue: true);
+
   bool getShowClock() => _settingsBox.get('showClock', defaultValue: true);
 
   bool getShowDate() => _settingsBox.get('showDate', defaultValue: true);
@@ -54,6 +57,11 @@ class Settings extends ChangeNotifier {
 
   void setShowBattery(bool value) {
     _settingsBox.put('showBattery', value);
+    notifyListeners();
+  }
+
+  void setShowNextAlarm(bool value) {
+    _settingsBox.put('showNextAlarm', value);
     notifyListeners();
   }
 
