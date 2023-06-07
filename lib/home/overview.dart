@@ -79,8 +79,11 @@ class _OverviewWidgetState extends State<OverviewWidget> {
         nextAlarm += diffMinutes != 0 ? " and " : "";
       }
 
-      nextAlarm += diffMinutes > 0 ? "$diffMinutes " : "";
-      nextAlarm += diffMinutes > 1 ? "minutes" : "minute";
+      if (diffMinutes > 0) {
+        nextAlarm += "$diffMinutes ";
+        nextAlarm += diffMinutes > 1 ? "minutes" : "minute";
+      }
+
       nextAlarm += ")";
     } on PlatformException catch (e) {
       nextAlarm = "Failed to get next alarm: '${e.message}'.";
