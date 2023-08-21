@@ -45,10 +45,8 @@ jobs:
         path: build/app/outputs/bundle/release/app-release.aab
 
     - name: Create GitHub Release and Upload APK & AAB
-      if: github.event_name == 'release'
-      run: |
-        gh release upload ${{ github.event.release.tag_name }} \
-          build/app/outputs/flutter-apk/app-release.apk \
-          build/app/outputs/bundle/release/app-release.aab
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: github.event_name == 'release'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab"
+          token: ${{ secrets.GITHUB_TOKEN }}
