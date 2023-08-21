@@ -47,7 +47,7 @@ jobs:
     - name: Create GitHub Release and Upload APK & AAB
       if: github.event_name == 'release'
       run: |
-    gh release upload ${{ github.event.release.tag_name }} \
+      gh release upload ${{ github.event.release.tag_name }} \
       build/app/outputs/flutter-apk/app-release.apk \
       build/app/outputs/bundle/release/app-release.aab
   env:
