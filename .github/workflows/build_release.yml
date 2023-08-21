@@ -36,19 +36,20 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: app-release-apk
-        path: build/app/outputs/flutter-apk/app-release.apk
+        path: build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.apk
 
     - name: Upload App Bundle
       uses: actions/upload-artifact@v2
       with:
         name: app-release-aab
-        path: build/app/outputs/bundle/release/app-release.aab
+        path: build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.aab
 
     - name: Create GitHub Release and Upload APK & AAB
       if: github.event_name == 'release'
       run: |
         gh release upload ${{ github.event.release.tag_name }} \
-          build/app/outputs/flutter-apk/app-release.apk \
-          build/app/outputs/bundle/release/app-release.aab
+          build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.apk\
+          build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.aab
+
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #make sure that the token can write to the repo!
