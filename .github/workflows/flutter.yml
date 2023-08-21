@@ -1,0 +1,38 @@
+name: Flutter CI
+
+on:
+  push:
+    branches:
+      - building_with_github_CI
+#      - main
+#     - dev
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: 'stable'  # or the specific version you want
+
+    - name: Get dependencies
+      run: flutter pub get
+    - name: Run tests
+      run: flutter test
+    - name: Build APK
+      run: flutter build apk
+#   - name: Build App Bundle
+#     run: flutter build appbundle
