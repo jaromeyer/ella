@@ -1,13 +1,8 @@
-name: Flutter CI
+name:  Build_release
 
 on:
-  push:
-    branches:
-      - building_with_github_CI
-#      - main
-#     - dev
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [created]
 
 jobs:
   build:
@@ -48,3 +43,14 @@ jobs:
       with:
         name: app-release-aab
         path: build/app/outputs/bundle/release/app-release.aab
+
+    - name: Create GitHub Release and Upload APK & AAB
+      if: github.event_name == 'release'
+      run: |
+        gh release create ${{ github.event.release.tag_name }} \
+          build/app/outputs/flutter-apk/app-release.apk \
+          build/app/outputs/bundle/release/app-release.aab \
+          --title "${{ github.event.release.name }}" \
+          --notes "${{ github.event.release.body }}" \
+          --repo ${{ github.repository }} \
+          --token ${{ secrets.GITHUB_TOKEN }}
