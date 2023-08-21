@@ -50,5 +50,5 @@ jobs:
         gh release upload ${{ github.event.release.tag_name }} \
           build/app/outputs/flutter-apk/app-release.apk \
           build/app/outputs/bundle/release/app-release.aab
-  env:
-    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
