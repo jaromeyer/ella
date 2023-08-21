@@ -53,3 +53,5 @@ jobs:
           --title "${{ github.event.release.name }}" \
           --notes "${{ github.event.release.body }}" \
           --repo ${{ github.repository }} \
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
