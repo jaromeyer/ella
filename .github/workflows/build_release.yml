@@ -53,4 +53,3 @@ jobs:
           --title "${{ github.event.release.name }}" \
           --notes "${{ github.event.release.body }}" \
           --repo ${{ github.repository }} \
-          --token ${{ secrets.GITHUB_TOKEN }}
