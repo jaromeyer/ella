@@ -1,0 +1,60 @@
+name:  Build_release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.13.0'
+        channel: 'stable'
+    - name: Get dependencies
+      run: flutter pub get
+#    - name: Run tests
+#     run: flutter test
+    - name: Build APK
+      run: flutter build apk
+    - name: Build App Bundle
+      run: flutter build appbundle
+#renaming
+    - name: rename APK
+      run: mv build/app/outputs/flutter-apk/app-release.apk  build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.apk
+    - name: rename AAB
+      run: mv build/app/outputs/bundle/release/app-release.aab build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.aab
+#upload to the CI interface
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release-apk
+        path: build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.apk
+
+    - name: Upload App Bundle
+      uses: actions/upload-artifact@v2
+      with:
+        name: app-release-aab
+        path: build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.aab
+#upload to the release
+    - name: Upload APK & AAB to the Release
+      if: github.event_name == 'release'
+      run: |
+        gh release upload ${{ github.event.release.tag_name }} \
+          build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.apk\
+          build/app/outputs/flutter-apk/ella_${{ github.event.release.tag_name }}.aab
+
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} #make sure that the token can write to the repo!
