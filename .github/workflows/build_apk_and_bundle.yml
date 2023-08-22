@@ -14,8 +14,8 @@ jobs:
 
     steps:
     - name: Get current date
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
     - name: Checkout code
       uses: actions/checkout@v3
