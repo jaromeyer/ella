@@ -13,6 +13,8 @@ class Settings extends ChangeNotifier {
 
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
 
+  bool getShowHelp() => _settingsBox.get('showHelp', defaultValue: true);
+
   bool getShowClock() => _settingsBox.get('showClock', defaultValue: true);
 
   bool getShowDate() => _settingsBox.get('showDate', defaultValue: true);
@@ -54,6 +56,11 @@ class Settings extends ChangeNotifier {
 
   void setShowBattery(bool value) {
     _settingsBox.put('showBattery', value);
+    notifyListeners();
+  }
+
+  void setShowHelp(bool value) {
+    _settingsBox.put('showHelp', value);
     notifyListeners();
   }
 

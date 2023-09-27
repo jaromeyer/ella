@@ -119,6 +119,11 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('Overview'),
                 tiles: <SettingsTile>[
                   SettingsTile.switchTile(
+                    title: const Text('Show help'),
+                    initialValue: settings.getShowHelp(),
+                    onToggle: (value) => settings.setShowHelp(value),
+                  ),
+                  SettingsTile.switchTile(
                     title: const Text('Show clock'),
                     initialValue: settings.getShowClock(),
                     onToggle: (value) => settings.setShowClock(value),

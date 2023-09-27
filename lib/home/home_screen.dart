@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ella/home/help_screen.dart';
 import 'package:ella/providers/settings_provider.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
@@ -75,19 +76,42 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     // show pinned apps when going back
-    return WillPopScope(
-      onWillPop: () {
-        setState(() => _filter = "");
-        return Future.value(false);
-      },
-      child: GestureDetector(
-        onLongPress: () {
-          HapticFeedback.heavyImpact();
-          showActionSheet(context);
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      floatingActionButton: Consumer<Settings>(
+        builder: (_, settings, __) {
+          if (settings.getShowHelp()) {
+            return FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const Help()));
+              },
+              child: const Icon(
+                Icons.help_outline_outlined,
+                size: 30,
+              ),
+            );
+          }
+          return const SizedBox.shrink();
         },
-        child: DrawingOverlay(
-          callback: _recognizeStrokes,
-          child: ScaleTransition(
+      ),
+      backgroundColor: Colors.transparent,
+      body: WillPopScope(
+        onWillPop: () {
+          setState(() => _filter = "");
+          return Future.value(false);
+        },
+        child: GestureDetector(
+          onLongPress: () {
+            HapticFeedback.heavyImpact();
+            showActionSheet(context);
+          },
+          child: DrawingOverlay(
+            callback: _recognizeStrokes,
+            child: ScaleTransition(
               scale: _animation,
               child: Consumer<Settings>(
                 builder: (context, settings, child) => Scaffold(
@@ -103,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen>
                     ],
                   ),
                 ),
-              )),
+              ),
+            ),
+          ),
         ),
       ),
     );
