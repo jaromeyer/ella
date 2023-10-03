@@ -84,11 +84,9 @@ class _HomeScreenState extends State<HomeScreen>
             return FloatingActionButton(
               backgroundColor: Colors.transparent,
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => const Help()));
+                Navigator.pushNamed(context, "/help");
               },
+              elevation: 0,
               child: const Icon(
                 Icons.help_outline_outlined,
                 size: 30,
