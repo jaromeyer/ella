@@ -10,12 +10,12 @@ class CachedMemoryImage extends StatelessWidget {
   final double? height;
 
   const CachedMemoryImage({
-    Key? key,
+    super.key,
     required this.bytes,
     required this.identifier,
     this.height,
     this.width,
-  }) : super(key: key);
+  });
 
   static void clearCache() {
     _cache.clear();

@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import '../providers/settings_provider.dart';
 
 class OverviewWidget extends StatefulWidget {
-  const OverviewWidget({Key? key}) : super(key: key);
+  const OverviewWidget({super.key});
 
   @override
   State<OverviewWidget> createState() => _OverviewWidgetState();

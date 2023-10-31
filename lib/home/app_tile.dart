@@ -9,7 +9,7 @@ import 'action_sheet.dart';
 class AppTile extends StatelessWidget {
   final Application app;
 
-  const AppTile(this.app, {Key? key}) : super(key: key);
+  const AppTile(this.app, {super.key});
 
   @override
   Widget build(BuildContext context) {

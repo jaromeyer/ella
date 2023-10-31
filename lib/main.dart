@@ -40,7 +40,7 @@ Future<void> main() async {
 }
 
 class EllaApp extends StatelessWidget {
-  const EllaApp({Key? key}) : super(key: key);
+  const EllaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
