@@ -1,5 +1,6 @@
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:device_apps/device_apps.dart';
+import 'package:ella/home/help_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,14 @@ void showActionSheet(BuildContext context, {Application? app}) {
       },
       leading: const Icon(Icons.wallpaper),
       title: const Text('Change wallpaper'),
+    ),
+    ListTile(
+      onTap: () {
+        Navigator.pop(context);
+        showHelpDialog(context);
+      },
+      leading: const Icon(Icons.help),
+      title: const Text('Show help'),
     ),
     ListTile(
       onTap: () {

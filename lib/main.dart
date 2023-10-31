@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ella/home/all_apps_screen.dart';
-import 'package:ella/home/help_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
@@ -58,7 +57,6 @@ class EllaApp extends StatelessWidget {
           '/': (context) => const HomeScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/allApps': (context) => const AllAppsScreen(),
-          '/help': (context) => const HelpScreen(),
         },
       ),
     );

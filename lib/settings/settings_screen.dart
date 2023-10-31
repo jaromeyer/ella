@@ -8,7 +8,7 @@ import 'app_picker.dart';
 import 'color_picker.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +118,6 @@ class SettingsScreen extends StatelessWidget {
               SettingsSection(
                 title: const Text('Overview'),
                 tiles: <SettingsTile>[
-                  SettingsTile.switchTile(
-                    title: const Text('Show help'),
-                    initialValue: settings.getShowHelp(),
-                    onToggle: (value) => settings.setShowHelp(value),
-                  ),
                   SettingsTile.switchTile(
                     title: const Text('Show clock'),
                     initialValue: settings.getShowClock(),

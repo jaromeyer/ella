@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:ella/home/help_screen.dart';
+import 'package:ella/home/help_dialog.dart';
 import 'package:ella/providers/settings_provider.dart';
 import 'package:flutter/material.dart' hide Ink;
 import 'package:flutter/services.dart';
@@ -41,6 +41,13 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // show help dialog once widgets have been initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (context.read<Settings>().getShowHelp()) {
+        showHelpDialog(context);
+      }
+    });
   }
 
   @override
@@ -76,54 +83,32 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   Widget build(BuildContext context) {
     // show pinned apps when going back
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: Consumer<Settings>(
-        builder: (_, settings, __) {
-          if (settings.getShowHelp()) {
-            return FloatingActionButton(
-              backgroundColor: Colors.transparent,
-              onPressed: () {
-                Navigator.pushNamed(context, "/help");
-              },
-              elevation: 0,
-              child: const Icon(
-                Icons.help_outline_outlined,
-                size: 30,
-              ),
-            );
-          }
-          return const SizedBox.shrink();
+    return WillPopScope(
+      onWillPop: () {
+        setState(() => _filter = "");
+        return Future.value(false);
+      },
+      child: GestureDetector(
+        onLongPress: () {
+          HapticFeedback.heavyImpact();
+          showActionSheet(context);
         },
-      ),
-      backgroundColor: Colors.transparent,
-      body: WillPopScope(
-        onWillPop: () {
-          setState(() => _filter = "");
-          return Future.value(false);
-        },
-        child: GestureDetector(
-          onLongPress: () {
-            HapticFeedback.heavyImpact();
-            showActionSheet(context);
-          },
-          child: DrawingOverlay(
-            callback: _recognizeStrokes,
-            child: ScaleTransition(
-              scale: _animation,
-              child: Consumer<Settings>(
-                builder: (context, settings, child) => Scaffold(
-                  backgroundColor: settings.getBackgroundColor(),
-                  body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
-                        child: OverviewWidget(),
-                      ),
-                      Expanded(child: Center(child: AppList(filter: _filter))),
-                    ],
-                  ),
+        child: DrawingOverlay(
+          callback: _recognizeStrokes,
+          child: ScaleTransition(
+            scale: _animation,
+            child: Consumer<Settings>(
+              builder: (context, settings, child) => Scaffold(
+                backgroundColor: settings.getBackgroundColor(),
+                body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
+                      child: OverviewWidget(),
+                    ),
+                    Expanded(child: Center(child: AppList(filter: _filter))),
+                  ],
                 ),
               ),
             ),
