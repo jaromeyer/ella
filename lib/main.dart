@@ -51,7 +51,8 @@ class EllaApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ella',
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
         initialRoute: '/',
         routes: {
           '/': (context) => const HomeScreen(),
