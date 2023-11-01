@@ -35,7 +35,7 @@ class Settings extends ChangeNotifier {
       defaultValue: "org.lineageos.etar");
 
   String getWeatherFormat() =>
-      _settingsBox.get('weatherFormat', defaultValue: "%c%t");
+      _settingsBox.get('weatherFormat', defaultValue: "%l:+%c%t");
 
   String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
       defaultValue: "org.lineageos.etar");
