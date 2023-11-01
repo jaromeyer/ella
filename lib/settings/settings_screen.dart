@@ -154,7 +154,7 @@ class SettingsScreen extends StatelessWidget {
                     onToggle: (value) => settings.setShowWeather(value),
                   ),
                   SettingsTile(
-                    title: const Text('wttr.in format'),
+                    title: const Text('Custom wttr.in format'),
                     enabled: settings.getShowWeather(),
                     value: TextFormField(
                       onFieldSubmitted: (value) {
@@ -204,6 +204,7 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   SettingsTile(
                     title: const Text('Scale Factor'),
+                    trailing: Text(settings.getScalingFactor().toString()),
                     value: Slider(
                         value: settings.getScalingFactor(),
                         min: 0.5,
