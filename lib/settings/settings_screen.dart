@@ -46,12 +46,13 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   SettingsTile(
                     title: const Text('Gesture timeout'),
+                    trailing: Text('${settings.getDrawingTimeout()} ms'),
                     value: Slider(
                         value: settings.getDrawingTimeout().toDouble(),
                         min: 0,
                         max: 2000,
                         divisions: 20,
-                        label: '${settings.getDrawingTimeout().toString()}ms',
+                        label: '${settings.getDrawingTimeout()} ms',
                         onChanged: (value) =>
                             settings.setDrawingTimeout(value.round())),
                   ),
@@ -207,9 +208,6 @@ class SettingsScreen extends StatelessWidget {
                         divisions: 10,
                         label: settings.getScalingFactor().toString(),
                         onChanged: (value) => settings.setScalingFactor(value)),
-                  ),
-                  SettingsTile(
-                    title: const Text(''),
                   ),
                 ],
               ),
