@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen>
     if (state == AppLifecycleState.paused) {
       setState(() => _filter = "");
       _controller.value = 0.7;
+    } else if (state == AppLifecycleState.resumed) {
       _controller.animateTo(1);
     }
   }
