@@ -28,9 +28,6 @@ class Settings extends ChangeNotifier {
 
   bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
 
-  bool getUseWeatherApp() =>
-      _settingsBox.get('useWeatherApp', defaultValue: false);
-
   int getDrawingTimeout() =>
       _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
 
@@ -97,11 +94,6 @@ class Settings extends ChangeNotifier {
 
   void setShowWeather(bool value) {
     _settingsBox.put('showWeather', value);
-    notifyListeners();
-  }
-
-  void setUseWeatherApp(bool value) {
-    _settingsBox.put('useWeatherApp', value);
     notifyListeners();
   }
 

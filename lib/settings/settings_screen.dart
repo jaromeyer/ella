@@ -163,18 +163,11 @@ class SettingsScreen extends StatelessWidget {
                       initialValue: settings.getWeatherFormat(),
                     ),
                   ),
-                  SettingsTile.switchTile(
-                    title: const Text('Use custom weather app'),
-                    initialValue: settings.getUseWeatherApp(),
-                    enabled: settings.getShowWeather(),
-                    onToggle: (value) => settings.setUseWeatherApp(value),
-                  ),
                   SettingsTile(
                     title: const Text('Weather app'),
                     description: Text(settings.getWeatherPackageName()),
                     trailing: const Icon(Icons.arrow_forward),
-                    enabled: settings.getShowWeather() &&
-                        settings.getUseWeatherApp(),
+                    enabled: settings.getShowWeather(),
                     onPressed: (_) {
                       showAppPicker(
                         context: context,

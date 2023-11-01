@@ -131,9 +131,8 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowDate())
               GestureDetector(
-                onTap: () => DeviceApps.openApp(
-                  settings.getCalendarPackageName(),
-                ),
+                onTap: () =>
+                    DeviceApps.openApp(settings.getCalendarPackageName()),
                 child: Text(
                   DateFormat.MMMEd().format(DateTime.now()),
                   style: TextStyle(fontSize: 16, color: textColor),
@@ -141,18 +140,8 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowWeather())
               GestureDetector(
-                onTap: () {
-                  if (settings.getUseWeatherApp()) {
-                    DeviceApps.openApp(
-                      settings.getWeatherPackageName(),
-                    );
-                  } else {
-                    const AndroidIntent(
-                      action: 'action_view',
-                      data: 'https://wttr.in',
-                    ).launch();
-                  }
-                },
+                onTap: () =>
+                    DeviceApps.openApp(settings.getWeatherPackageName()),
                 child: Text(
                   _weatherString,
                   style: TextStyle(fontSize: 16, color: textColor),
