@@ -124,6 +124,11 @@ class SettingsScreen extends StatelessWidget {
                     onToggle: (value) => settings.setShowClock(value),
                   ),
                   SettingsTile.switchTile(
+                    title: const Text('Show next alarm'),
+                    initialValue: settings.getShowNextAlarm(),
+                    onToggle: (value) => settings.setShowNextAlarm(value),
+                  ),
+                  SettingsTile.switchTile(
                     title: const Text('Show date'),
                     initialValue: settings.getShowDate(),
                     onToggle: (value) => settings.setShowDate(value),
