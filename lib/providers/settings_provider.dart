@@ -15,7 +15,7 @@ class Settings extends ChangeNotifier {
 
   bool getShowNextAlarm() =>
       _settingsBox.get('showNextAlarm', defaultValue: true);
-  
+
   bool getShowHelp() => _settingsBox.get('showHelp', defaultValue: true);
 
   bool getShowClock() => _settingsBox.get('showClock', defaultValue: true);
@@ -36,6 +36,9 @@ class Settings extends ChangeNotifier {
 
   String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
       defaultValue: "org.lineageos.etar");
+
+  String getWeatherFormat() =>
+      _settingsBox.get('weatherFormat', defaultValue: "%c%t");
 
   String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
       defaultValue: "org.lineageos.etar");
@@ -66,7 +69,7 @@ class Settings extends ChangeNotifier {
     _settingsBox.put('showNextAlarm', value);
     notifyListeners();
   }
-  
+
   void setShowHelp(bool value) {
     _settingsBox.put('showHelp', value);
     notifyListeners();
@@ -109,6 +112,11 @@ class Settings extends ChangeNotifier {
 
   void setCalendarPackageName(String value) {
     _settingsBox.put('calendarPackageName', value);
+    notifyListeners();
+  }
+
+  void setWeatherFormat(String value) {
+    _settingsBox.put('weatherFormat', value);
     notifyListeners();
   }
 

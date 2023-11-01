@@ -34,12 +34,13 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   bool _alarmSet = false;
   final weekDays = <String>["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-  void _update() async {
+  void _updateBatteryWeather(String weatherFormat) async {
     _batteryLevel = await Battery().batteryLevel;
+
     // get weather information
     try {
       http.Response response =
-          await http.get(Uri.parse('https://wttr.in/?format=%c%t\n%w'));
+          await http.get(Uri.parse('https://wttr.in/?format=$weatherFormat'));
       _weatherString = response.body;
     } on Exception {
       _weatherString = 'Not available';
@@ -98,11 +99,13 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   @override
   void initState() {
     super.initState();
-    _update();
+
+    // initial update
+    _updateBatteryWeather(context.read<Settings>().getWeatherFormat());
     _getNextAlarm();
     _broadcastReceiver.messages.listen((event) {
       if (event.name == "android.intent.action.TIME_TICK") {
-        _update();
+        _updateBatteryWeather(context.read<Settings>().getWeatherFormat());
         _getNextAlarm();
       }
       if (event.name == "android.app.action.NEXT_ALARM_CLOCK_CHANGED") {

@@ -153,6 +153,16 @@ class SettingsScreen extends StatelessWidget {
                     initialValue: settings.getShowWeather(),
                     onToggle: (value) => settings.setShowWeather(value),
                   ),
+                  SettingsTile(
+                    title: const Text('wttr.in format'),
+                    enabled: settings.getShowWeather(),
+                    value: TextFormField(
+                      onFieldSubmitted: (value) {
+                        settings.setWeatherFormat(value);
+                      },
+                      initialValue: settings.getWeatherFormat(),
+                    ),
+                  ),
                   SettingsTile.switchTile(
                     title: const Text('Use custom weather app'),
                     initialValue: settings.getUseWeatherApp(),
