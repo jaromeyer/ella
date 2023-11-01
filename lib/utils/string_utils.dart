@@ -5,6 +5,13 @@ class StringUtils {
   }
 
   static String formatDuration(Duration duration) {
+    bool past = duration < Duration.zero;
+    if (past) duration = -duration;
+
+    if (duration < const Duration(minutes: 1)) {
+      return past ? "just now" : "now";
+    }
+
     List<String> items = [];
     if (duration.inDays > 0) {
       items.add(formatNumberWithUnit(duration.inDays, "day", "days"));
@@ -16,7 +23,9 @@ class StringUtils {
       items.add(
           formatNumberWithUnit(duration.inMinutes % 60, "minute", "minutes"));
     }
-    return grammaticalJoin(items);
+    return past
+        ? "${grammaticalJoin(items)} ago"
+        : "in ${grammaticalJoin(items)}";
   }
 
   static String grammaticalJoin(List<String> items) {

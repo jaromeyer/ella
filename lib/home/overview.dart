@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -30,20 +31,24 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   late final StreamSubscription<BatteryState> _batteryListener;
   String _nextAlarm = "Not available";
   String _weatherString = 'Not available';
+  DateTime _lastWeatherUpdate = DateTime.now();
   int _batteryLevel = 0;
   bool _isCharging = false;
 
-  void _updateBatteryWeather(String weatherFormat) async {
-    _batteryLevel = await Battery().batteryLevel;
-
-    // get weather information
+  void _updateWeather(String weatherFormat) async {
     try {
       http.Response response =
           await http.get(Uri.parse('https://wttr.in/?format=$weatherFormat'));
       _weatherString = response.body;
+      _lastWeatherUpdate = DateTime.now();
+      setState(() {});
     } on Exception {
-      _weatherString = 'Not available';
+      log("failed to retrieve weather");
     }
+  }
+
+  void _updateBattery() async {
+    _batteryLevel = await Battery().batteryLevel;
     setState(() {});
   }
 
@@ -56,7 +61,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
         String timeString = DateFormat('EE HH:mm').format(nextAlarm);
         String durationString =
             StringUtils.formatDuration(nextAlarm.difference(DateTime.now()));
-        _nextAlarm = "⏰ $timeString (in $durationString)";
+        _nextAlarm = "⏰ $timeString ($durationString)";
       }
     } on Exception {
       _nextAlarm = "Not available";
@@ -69,13 +74,19 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     super.initState();
 
     // initial update
-    _updateBatteryWeather(context.read<Settings>().getWeatherFormat());
+    _updateWeather(context.read<Settings>().getWeatherFormat());
+    _updateBattery();
     _updateAlarm();
 
     // register receivers to trigger subsequent updates
     _broadcastReceiver.messages.listen((event) {
       if (event.name == "android.intent.action.TIME_TICK") {
-        _updateBatteryWeather(context.read<Settings>().getWeatherFormat());
+        // update weather if last successful update was at least 15 minutes ago
+        if (DateTime.now().difference(_lastWeatherUpdate) >
+            const Duration(minutes: 15)) {
+          _updateWeather(context.read<Settings>().getWeatherFormat());
+        }
+        _updateBattery();
         _updateAlarm();
       }
       if (event.name == "android.app.action.NEXT_ALARM_CLOCK_CHANGED") {
@@ -143,7 +154,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                 onTap: () =>
                     DeviceApps.openApp(settings.getWeatherPackageName()),
                 child: Text(
-                  _weatherString,
+                  "$_weatherString (${StringUtils.formatDuration(_lastWeatherUpdate.difference(DateTime.now()))})",
                   style: TextStyle(fontSize: 16, color: textColor),
                 ),
               ),
