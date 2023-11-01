@@ -40,10 +40,10 @@ class _HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
 
     // show help dialog once widgets have been initialized
     if (context.read<Settings>().getShowHelp()) {
+      WidgetsBinding.instance.addObserver(this);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showHelpDialog(context, dismissForever: true);
       });
@@ -83,39 +83,48 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
-    // show pinned apps when going back
-    return WillPopScope(
-      onWillPop: () {
-        setState(() => _filter = "");
-        return Future.value(false);
-      },
-      child: GestureDetector(
-        onLongPress: () {
-          HapticFeedback.heavyImpact();
-          showActionSheet(context);
-        },
-        child: DrawingOverlay(
-          callback: _recognizeStrokes,
-          child: ScaleTransition(
-            scale: _animation,
-            child: Consumer<Settings>(
-              builder: (context, settings, child) => Scaffold(
-                backgroundColor: settings.getBackgroundColor(),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
-                      child: OverviewWidget(),
+    return Consumer<Settings>(
+      builder: (context, settings, _) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            statusBarIconBrightness:
+                ThemeData.estimateBrightnessForColor(settings.getTextColor()),
+          ),
+          child: WillPopScope(
+            onWillPop: () {
+              // show pinned apps when going back
+              setState(() => _filter = "");
+              return Future.value(false);
+            },
+            child: GestureDetector(
+              onLongPress: () {
+                HapticFeedback.heavyImpact();
+                showActionSheet(context);
+              },
+              child: DrawingOverlay(
+                callback: _recognizeStrokes,
+                child: ScaleTransition(
+                  scale: _animation,
+                  child: Scaffold(
+                    backgroundColor: settings.getBackgroundColor(),
+                    body: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
+                          child: OverviewWidget(),
+                        ),
+                        Expanded(
+                            child: Center(child: AppList(filter: _filter))),
+                      ],
                     ),
-                    Expanded(child: Center(child: AppList(filter: _filter))),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
