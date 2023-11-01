@@ -54,38 +54,46 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
     var controller = TextEditingController(text: app.appName);
     AppsProvider appsProvider = context.read<AppsProvider>();
     List<Widget> appSpecificTiles = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: TextFormField(
-          controller: controller,
-          style: const TextStyle(fontSize: 30),
-          focusNode: nameFocus,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            icon: CachedMemoryImage(
-              width: 40,
-              bytes: app.icon,
-              identifier: ValueKey(app.packageName),
+      StatefulBuilder(
+        builder: (context, setState) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: TextFormField(
+              controller: controller,
+              style: const TextStyle(fontSize: 30),
+              focusNode: nameFocus,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                icon: CachedMemoryImage(
+                  width: 40,
+                  bytes: app.icon,
+                  identifier: ValueKey(app.packageName),
+                ),
+                suffixIcon: app.appName == app.originalName
+                    ? IconButton(
+                        onPressed: () {
+                          nameFocus.requestFocus();
+                        },
+                        icon: const Icon(Icons.edit),
+                      )
+                    : IconButton(
+                        onPressed: () {
+                          app.appName = app.originalName;
+                          controller.text = app.originalName;
+                          appsProvider.update(app);
+                          setState(() {});
+                        },
+                        icon: const Icon(Icons.settings_backup_restore),
+                      ),
+              ),
+              onFieldSubmitted: (name) {
+                app.appName = name;
+                appsProvider.update(app);
+                setState(() {});
+              },
             ),
-            suffixIcon: app.appName == app.originalName
-                ? IconButton(
-                    onPressed: () => nameFocus.requestFocus(),
-                    icon: const Icon(Icons.edit),
-                  )
-                : IconButton(
-                    onPressed: () {
-                      app.appName = app.originalName;
-                      controller.text = app.originalName;
-                      appsProvider.update(app);
-                    },
-                    icon: const Icon(Icons.settings_backup_restore),
-                  ),
-          ),
-          onFieldSubmitted: (name) {
-            app.appName = name;
-            appsProvider.update(app);
-          },
-        ),
+          );
+        },
       ),
       ListTile(
         onTap: () {
