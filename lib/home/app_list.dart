@@ -1,6 +1,6 @@
 import 'package:animated_list_plus/animated_list_plus.dart';
 import 'package:animated_list_plus/transitions.dart';
-import 'package:device_apps/device_apps.dart';
+import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,14 +22,14 @@ class _AppListState extends State<AppList> {
   Widget build(BuildContext context) {
     return Consumer2<Settings, AppsProvider>(
       builder: (context, settings, appsProvider, _) {
-        List<Application> apps = widget.filter.isEmpty
+        List<CachedApplication> apps = widget.filter.isEmpty
             ? appsProvider.getPinnedApps()
             : appsProvider.getApps(filter: widget.filter);
         if (apps.isNotEmpty) {
           // app list is non empty: return list
           if (settings.getEnableAnimations()) {
             // animations disabled: return ImplicitlyAnimatedList
-            return ImplicitlyAnimatedList<Application>(
+            return ImplicitlyAnimatedList<CachedApplication>(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               items: apps,
@@ -48,7 +48,7 @@ class _AppListState extends State<AppList> {
             return ListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              children: [for (Application app in apps) AppTile(app)],
+              children: [for (CachedApplication app in apps) AppTile(app)],
             );
           }
         } else {

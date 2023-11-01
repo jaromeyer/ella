@@ -1,4 +1,4 @@
-import 'package:device_apps/device_apps.dart';
+import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -61,14 +61,17 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
           ),
           body: Builder(
             builder: (_) {
-              List<Application> apps = appsProvider.getApps(filter: _filter);
+              List<CachedApplication> apps =
+                  appsProvider.getApps(filter: _filter);
               if (apps.isNotEmpty) {
                 return Scrollbar(
                   thickness: 1.5,
                   child: ListView(
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    children: [for (Application app in apps) AppTile(app)],
+                    children: [
+                      for (CachedApplication app in apps) AppTile(app)
+                    ],
                   ),
                 );
               } else {

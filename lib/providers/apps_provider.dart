@@ -1,24 +1,32 @@
-import 'dart:collection';
-
 import 'package:device_apps/device_apps.dart';
+import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class AppsProvider extends ChangeNotifier {
-  static late final Set<Application> _apps;
-  final Box _pinnedAppsBox = Hive.box('pinnedApps');
-
-  static Future<void> initialize() async {
-    _apps = SplayTreeSet.from(
-      await DeviceApps.getInstalledApplications(
-          onlyAppsWithLaunchIntent: true,
-          includeSystemApps: true,
-          includeAppIcons: true),
-      (a, b) => a.appName.toLowerCase().compareTo(b.appName.toLowerCase()),
-    );
-  }
+  final Box<CachedApplication> _appsBox =
+      Hive.box<CachedApplication>(name: 'apps');
 
   AppsProvider() {
+    Hive.registerAdapter(
+        'CachedApplication', (json) => CachedApplication.fromJson(json));
+    // query installed apps and update asynchronously
+    DeviceApps.getInstalledApplications(
+            onlyAppsWithLaunchIntent: true,
+            includeSystemApps: true,
+            includeAppIcons: true)
+        .then((apps) {
+      for (var app in apps) {
+        if (_appsBox.containsKey(app.packageName)) {
+          _appsBox.put(
+              app.packageName, _appsBox.get(app.packageName)!..update(app));
+        } else {
+          _appsBox.put(app.packageName, CachedApplication.fromApplication(app));
+        }
+      }
+      notifyListeners();
+    });
+
     // register change listener to update _apps
     DeviceApps.listenToAppsChanges().listen((event) async {
       String packageName = event.packageName;
@@ -26,49 +34,54 @@ class AppsProvider extends ChangeNotifier {
         case ApplicationEventType.installed:
         case ApplicationEventType.disabled: // disabled and enabled are mixed-up
         case ApplicationEventType.updated:
-          _apps.removeWhere((app) => app.packageName == packageName);
-          _apps.add((await DeviceApps.getApp(packageName, true))!);
+          var app = (await DeviceApps.getApp(packageName, true))!;
+          _appsBox.put(
+              app.packageName,
+              (_appsBox.get(app.packageName)?..update(app)) ??
+                  CachedApplication.fromApplication(app));
           break;
         case ApplicationEventType.uninstalled:
         case ApplicationEventType.enabled: // disabled and enabled are mixed-up
-          _apps.removeWhere((app) => app.packageName == packageName);
-          _pinnedAppsBox.delete(packageName); // unpin app
+          _appsBox.delete(packageName);
           break;
       }
       notifyListeners();
     });
   }
 
-  List<Application> getPinnedApps() =>
-      _apps.where((app) => isPinned(app)).toList();
+  List<CachedApplication> getPinnedApps() => _appsBox
+      .getAll(_appsBox.keys)
+      .nonNulls
+      .where((app) => app.pinned)
+      .toList()
+    ..sort((a, b) => a.appName.compareTo(b.appName));
 
-  List<Application> getApps({String filter = ""}) {
-    if (filter.isEmpty) {
-      return _apps.toList();
-    } else if (filter.length == 1) {
-      return _apps
-          .where((app) =>
-              app.appName.toLowerCase().startsWith(filter.toLowerCase()))
-          .toList();
+  List<CachedApplication> getApps({String filter = ""}) {
+    var apps = _appsBox.getAll(_appsBox.keys).nonNulls;
+    if (filter.length == 1) {
+      apps = apps.where(
+          (app) => app.appName.toLowerCase().startsWith(filter.toLowerCase()));
     } else {
-      return _apps
-          .where((app) => RegExp('\\b${filter.toLowerCase()}')
-              .hasMatch(app.appName.toLowerCase()))
-          .toList();
+      apps = apps.where((app) => RegExp('\\b${filter.toLowerCase()}')
+          .hasMatch(app.appName.toLowerCase()));
     }
+    return apps.toList()..sort((a, b) => a.appName.compareTo(b.appName));
   }
 
-  bool isPinned(Application app) {
-    return _pinnedAppsBox.containsKey(app.packageName);
-  }
-
-  void pinApp(Application app) {
-    _pinnedAppsBox.put(app.packageName, null);
+  void pinApp(CachedApplication app) {
+    app.pinned = true;
+    _appsBox.put(app.packageName, app);
     notifyListeners();
   }
 
-  void unpinApp(Application app) {
-    _pinnedAppsBox.delete(app.packageName);
+  void unpinApp(CachedApplication app) {
+    app.pinned = false;
+    _appsBox.put(app.packageName, app);
+    notifyListeners();
+  }
+
+  void update(CachedApplication app) {
+    _appsBox.put(app.packageName, app);
     notifyListeners();
   }
 }

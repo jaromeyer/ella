@@ -1,4 +1,4 @@
-import 'package:device_apps/device_apps.dart';
+import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +7,7 @@ import '../utils/cached_image.dart';
 import 'action_sheet.dart';
 
 class AppTile extends StatelessWidget {
-  final Application app;
+  final CachedApplication app;
 
   const AppTile(this.app, {super.key});
 
@@ -18,14 +18,14 @@ class AppTile extends StatelessWidget {
         return ListTile(
           onTap: () {
             Navigator.popUntil(context, (route) => route.settings.name == "/");
-            DeviceApps.openApp(app.packageName);
+            app.launch();
           },
           onLongPress: () => showActionSheet(context, app: app),
           leading: settings.getShowIcons()
               ? CachedMemoryImage(
                   width: 30 * settings.getScalingFactor() + 10,
-                  bytes: (app as ApplicationWithIcon).icon,
-                  identifier: ValueKey(app),
+                  bytes: app.icon,
+                  identifier: ValueKey(app.packageName),
                 )
               : null,
           title: settings.getShowNames()

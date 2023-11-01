@@ -4,7 +4,8 @@ import 'package:ella/home/all_apps_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_digital_ink_recognition/google_mlkit_digital_ink_recognition.dart';
-import 'package:hive_flutter/adapters.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'home/home_screen.dart';
@@ -15,19 +16,16 @@ import 'settings/settings_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // make statusbar & system navbar transparent
+  // make status bar & system navbar transparent
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: Colors.transparent));
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  // initialize hive stuff
-  await Hive.initFlutter();
-  await Hive.openBox('settings');
-  await Hive.openBox('pinnedApps');
-
-  await AppsProvider.initialize();
+  // configure hive
+  final dir = await getApplicationDocumentsDirectory();
+  Hive.defaultDirectory = dir.path;
 
   // make sure ink recognition model is downloaded
   DigitalInkRecognizerModelManager modelManager =

@@ -43,11 +43,11 @@ class _HomeScreenState extends State<HomeScreen>
     WidgetsBinding.instance.addObserver(this);
 
     // show help dialog once widgets have been initialized
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (context.read<Settings>().getShowHelp()) {
-        showHelpDialog(context);
-      }
-    });
+    if (context.read<Settings>().getShowHelp()) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showHelpDialog(context, dismissForever: true);
+      });
+    }
   }
 
   @override

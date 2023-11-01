@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 
 import '../providers/settings_provider.dart';
 
-void showHelpDialog(context) {
+void showHelpDialog(context, {dismissForever = false}) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
-      title: const Text('Welcome'),
+      title: const Text('Quick start'),
       content: const SingleChildScrollView(
         child: Column(
           children: [
@@ -38,15 +38,16 @@ void showHelpDialog(context) {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Close'),
+          child: const Text('Dismiss'),
         ),
-        TextButton(
-          onPressed: () {
-            context.read<Settings>().setShowHelp(false);
-            Navigator.pop(context);
-          },
-          child: const Text('Don\'t show again'),
-        ),
+        if (dismissForever)
+          TextButton(
+            onPressed: () {
+              context.read<Settings>().setShowHelp(false);
+              Navigator.pop(context);
+            },
+            child: const Text('Don\'t show again'),
+          ),
       ],
     ),
   );

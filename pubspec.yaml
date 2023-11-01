@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.6 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,8 +35,9 @@ dependencies:
   device_apps: ^2.2.0
   flutter_colorpicker: ^1.0.3
   google_mlkit_digital_ink_recognition: ^0.9.0
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
+  hive: ^4.0.0-dev.2
+  isar_flutter_libs: ^4.0.0-dev.13
+  path_provider: ^2.1.1
   http: ^1.1.0
   intl: ^0.18.1
   perfect_freehand: ^1.0.4

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class Settings extends ChangeNotifier {
-  final Box _settingsBox = Hive.box('settings');
+  final Box _settingsBox = Hive.box(name: 'settings');
 
   // getters
   Color getBackgroundColor() => Color(_settingsBox.get('backgroundColor',

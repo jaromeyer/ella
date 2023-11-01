@@ -1,13 +1,13 @@
 import 'package:android_intent_plus/android_intent.dart';
-import 'package:device_apps/device_apps.dart';
 import 'package:ella/home/help_dialog.dart';
+import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/apps_provider.dart';
 import '../utils/cached_image.dart';
 
-void showActionSheet(BuildContext context, {Application? app}) {
+void showActionSheet(BuildContext context, {CachedApplication? app}) {
   List<Widget> tiles = [
     Visibility(
       visible: ModalRoute.of(context)!.settings.name != "/allApps",
@@ -50,41 +50,63 @@ void showActionSheet(BuildContext context, {Application? app}) {
 
   // add app specific tiles if app parameter was given
   if (app != null) {
+    FocusNode nameFocus = FocusNode();
+    var controller = TextEditingController(text: app.appName);
     AppsProvider appsProvider = context.read<AppsProvider>();
-    bool isPinned = appsProvider.isPinned(app);
     List<Widget> appSpecificTiles = [
-      Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: CachedMemoryImage(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: TextFormField(
+          controller: controller,
+          style: const TextStyle(fontSize: 30),
+          focusNode: nameFocus,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            icon: CachedMemoryImage(
               width: 40,
-              bytes: (app as ApplicationWithIcon).icon,
-              identifier: ValueKey(app),
+              bytes: app.icon,
+              identifier: ValueKey(app.packageName),
             ),
+            suffixIcon: app.appName == app.originalName
+                ? IconButton(
+                    onPressed: () => nameFocus.requestFocus(),
+                    icon: const Icon(Icons.edit),
+                  )
+                : IconButton(
+                    onPressed: () {
+                      app.appName = app.originalName;
+                      controller.text = app.originalName;
+                      appsProvider.update(app);
+                    },
+                    icon: const Icon(Icons.settings_backup_restore),
+                  ),
           ),
-          Text(app.appName, style: const TextStyle(fontSize: 30)),
-        ],
+          onFieldSubmitted: (name) {
+            app.appName = name;
+            appsProvider.update(app);
+          },
+        ),
       ),
       ListTile(
         onTap: () {
-          if (isPinned) {
+          if (app.pinned) {
             appsProvider.unpinApp(app);
           } else {
             appsProvider.pinApp(app);
           }
           Navigator.pop(context);
         },
-        leading:
-            isPinned ? const Icon(Icons.star) : const Icon(Icons.star_outline),
-        title: isPinned
+        leading: app.pinned
+            ? const Icon(Icons.star)
+            : const Icon(Icons.star_outline),
+        title: app.pinned
             ? const Text('Remove from favorites')
             : const Text('Add to favorites'),
       ),
       ListTile(
         onTap: () {
           Navigator.pop(context);
-          DeviceApps.openAppSettings(app.packageName);
+          app.openAppSettings();
         },
         leading: const Icon(Icons.info),
         title: const Text('App info'),
@@ -92,7 +114,7 @@ void showActionSheet(BuildContext context, {Application? app}) {
       ListTile(
         onTap: () {
           Navigator.pop(context);
-          DeviceApps.uninstallApp(app.packageName);
+          app.uninstall();
         },
         leading: const Icon(Icons.delete),
         title: const Text('Uninstall'),
