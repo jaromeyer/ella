@@ -38,7 +38,7 @@ class Settings extends ChangeNotifier {
       _settingsBox.get('weatherFormat', defaultValue: "%l:+%c%t");
 
   String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
-      defaultValue: "org.lineageos.etar");
+      defaultValue: "ch.admin.meteoswiss");
 
   double getScalingFactor() =>
       _settingsBox.get('scalingFactor', defaultValue: 1.0);
