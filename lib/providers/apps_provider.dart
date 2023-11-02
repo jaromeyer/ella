@@ -16,6 +16,8 @@ class AppsProvider extends ChangeNotifier {
             includeSystemApps: true,
             includeAppIcons: true)
         .then((apps) {
+      _appsBox.deleteAll(_appsBox.keys
+        ..removeWhere((pn) => apps.map((app) => app.packageName).contains(pn)));
       for (var app in apps) {
         if (_appsBox.containsKey(app.packageName)) {
           _appsBox.put(
