@@ -71,13 +71,16 @@ class _HomeScreenState extends State<HomeScreen>
     final List<RecognitionCandidate> candidates =
         await digitalInkRecognizer.recognize(ink);
     // apply manual tweaks to result
-    String prefix = candidates.first.text;
+    String prefix = candidates
+        .firstWhere(
+            (candidate) => RegExp(r'^[a-zA-Z]+$').hasMatch(candidate.text))
+        .text;
     if (prefix == 'l' && !candidates.any((c) => c.text == 'L') ||
         prefix == '1' && candidates.any((c) => c.text == '|')) {
       prefix = 'i';
     }
     if (mounted) {
-      setState(() => _filter = prefix);
+      setState(() => _filter = prefix.toLowerCase());
     }
   }
 
