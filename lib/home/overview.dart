@@ -59,8 +59,9 @@ class _OverviewWidgetState extends State<OverviewWidget> {
         _nextAlarm = "⏰ No alarm set";
       } else {
         String timeString = DateFormat('EE HH:mm').format(nextAlarm);
-        String durationString =
-            StringUtils.formatDuration(nextAlarm.difference(DateTime.now()));
+        String durationString = StringUtils.formatDuration(
+            nextAlarm.difference(DateTime.now()),
+            precision: 2);
         _nextAlarm = "⏰ $timeString ($durationString)";
       }
     } on Exception {
