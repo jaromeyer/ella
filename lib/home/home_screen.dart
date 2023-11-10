@@ -111,14 +111,14 @@ class _HomeScreenState extends State<HomeScreen>
                   child: Scaffold(
                     backgroundColor: settings.getBackgroundColor(),
                     body: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Padding(
-                          padding: EdgeInsets.fromLTRB(20, 160, 0, 0),
+                          padding: EdgeInsets.only(left: 20),
                           child: OverviewWidget(),
                         ),
-                        Expanded(
-                            child: Center(child: AppList(filter: _filter))),
+                        Center(child: AppList(filter: _filter)),
                       ],
                     ),
                   ),
