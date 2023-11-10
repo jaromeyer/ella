@@ -34,14 +34,14 @@ dependencies:
   battery_plus: ^4.1.0
   device_apps: ^2.2.0
   flutter_colorpicker: ^1.0.3
-  google_mlkit_digital_ink_recognition: ^0.9.0
+  google_mlkit_digital_ink_recognition: ^0.10.0
   hive: ^4.0.0-dev.2
   isar_flutter_libs: ^4.0.0-dev.13
   path_provider: ^2.1.1
   http: ^1.1.0
   intl: ^0.18.1
   perfect_freehand: ^1.0.4
-  provider: ^6.0.5
+  provider: ^6.1.1
   settings_ui: ^2.0.2
   flutter_broadcasts:
     git:
