@@ -75,45 +75,6 @@ class SettingsScreen extends StatelessWidget {
                       initialColor: settings.getTextColor(),
                     ),
                   ),
-                  SettingsTile.switchTile(
-                    onToggle: (value) {
-                      if (value) {
-                        showColorPicker(
-                            context: context,
-                            onColorSelected: settings.setBackgroundColor,
-                            initialColor: settings.getBackgroundColor() ==
-                                    Colors.transparent
-                                ? Colors.blue
-                                : settings.getBackgroundColor());
-                      } else {
-                        settings.setBackgroundColor(Colors.transparent);
-                      }
-                    },
-                    initialValue:
-                        settings.getBackgroundColor() != Colors.transparent,
-                    title: const Text('Use solid background color'),
-                  ),
-                  SettingsTile(
-                    enabled:
-                        settings.getBackgroundColor() != Colors.transparent,
-                    title: const Text('Background color'),
-                    trailing: Container(
-                      height: 30,
-                      width: 30,
-                      margin: const EdgeInsets.all(3.0),
-                      decoration: BoxDecoration(
-                        color: settings.getBackgroundColor(),
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: Theme.of(context).highlightColor, width: 2),
-                      ),
-                    ),
-                    onPressed: (_) => showColorPicker(
-                      context: context,
-                      onColorSelected: settings.setBackgroundColor,
-                      initialColor: settings.getBackgroundColor(),
-                    ),
-                  ),
                 ],
               ),
               SettingsSection(
@@ -188,9 +149,9 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('App list'),
                 tiles: <SettingsTile>[
                   SettingsTile.switchTile(
-                    title: const Text('Enable animations'),
-                    initialValue: settings.getEnableAnimations(),
-                    onToggle: (value) => settings.setEnableAnimations(value),
+                    title: const Text('Show search string'),
+                    initialValue: settings.getShowSearchString(),
+                    onToggle: (value) => settings.setShowSearchString(value),
                   ),
                   SettingsTile.switchTile(
                     title: const Text('Show icons'),
@@ -203,7 +164,19 @@ class SettingsScreen extends StatelessWidget {
                     onToggle: (value) => settings.setShowNames(value),
                   ),
                   SettingsTile(
-                    title: const Text('Scale Factor'),
+                    title: const Text('Animation duration'),
+                    trailing: Text('${settings.getAnimationDuration()} ms'),
+                    value: Slider(
+                        value: settings.getAnimationDuration().toDouble(),
+                        min: 0,
+                        max: 1000,
+                        divisions: 20,
+                        label: '${settings.getAnimationDuration()} ms',
+                        onChanged: (value) =>
+                            settings.setAnimationsDuration(value.round())),
+                  ),
+                  SettingsTile(
+                    title: const Text('Scale factor'),
                     trailing: Text(settings.getScalingFactor().toString()),
                     value: Slider(
                         value: settings.getScalingFactor(),

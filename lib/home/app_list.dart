@@ -25,46 +25,60 @@ class _AppListState extends State<AppList> {
         List<CachedApplication> apps = widget.filter.isEmpty
             ? appsProvider.getPinnedApps()
             : appsProvider.getApps(filter: widget.filter);
-        if (apps.isNotEmpty) {
-          // app list is non empty: return list
-          if (settings.getEnableAnimations()) {
-            // animations disabled: return ImplicitlyAnimatedList
-            return ImplicitlyAnimatedList<CachedApplication>(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              items: apps,
-              areItemsTheSame: (a, b) => a.packageName == b.packageName,
-              itemBuilder: (_, animation, app, __) {
-                return SizeFadeTransition(
-                  sizeFraction: 0.6,
-                  curve: Curves.easeInOut,
-                  animation: animation,
-                  child: AppTile(app),
-                );
-              },
-            );
-          } else {
-            // animations disabled: return normal ListView
-            return ListView(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [for (CachedApplication app in apps) AppTile(app)],
-            );
-          }
-        } else {
-          // app list is empty: return text message
-          return Text(
-            widget.filter.isEmpty
-                ? 'Add favorite apps to be displayed here'
-                : 'No apps found for "${widget.filter}"',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.w300,
-              color: settings.getTextColor(),
+        List<Widget> children = [
+          if (settings.getShowSearchString() &&
+              widget.filter.isNotEmpty &&
+              apps.isNotEmpty)
+            ListTile(
+              key: const Key("search_string"),
+              titleAlignment: ListTileTitleAlignment.center,
+              title: Text(
+                "'${widget.filter}'",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: settings.getTextColor(),
+                ),
+              ),
             ),
-          );
-        }
+          if (apps.isEmpty)
+            ListTile(
+              key: const Key("empty_message"),
+              titleAlignment: ListTileTitleAlignment.center,
+              title: Text(
+                widget.filter.isEmpty
+                    ? "Pinned apps will appear here"
+                    : "No apps found for '${widget.filter}'",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w300,
+                  color: settings.getTextColor(),
+                ),
+              ),
+            ),
+          for (var app in apps) AppTile(app, key: Key(app.packageName))
+        ];
+        var animationDuration =
+            Duration(milliseconds: settings.getAnimationDuration());
+        return ImplicitlyAnimatedList<Widget>(
+          shrinkWrap: true,
+          insertDuration: animationDuration,
+          updateDuration: animationDuration,
+          removeDuration: animationDuration,
+          physics: const NeverScrollableScrollPhysics(),
+          items: children,
+          areItemsTheSame: (a, b) => a.key == b.key,
+          itemBuilder: (_, animation, child, __) {
+            return SizeFadeTransition(
+              sizeFraction: 0.6,
+              curve: Curves.easeInOut,
+              animation: animation,
+              child: child,
+            );
+          },
+        );
       },
     );
   }

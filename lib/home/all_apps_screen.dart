@@ -22,7 +22,7 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
     return Consumer2<Settings, AppsProvider>(
       builder: (context, settings, appsProvider, _) {
         return Scaffold(
-          backgroundColor: settings.getBackgroundColor(),
+          backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,

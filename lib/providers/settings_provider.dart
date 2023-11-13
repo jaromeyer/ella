@@ -5,11 +5,8 @@ class Settings extends ChangeNotifier {
   final Box _settingsBox = Hive.box(name: 'settings');
 
   // getters
-  Color getBackgroundColor() => Color(_settingsBox.get('backgroundColor',
-      defaultValue: Colors.transparent.value));
-
-  bool getEnableAnimations() =>
-      _settingsBox.get('enableAnimations', defaultValue: true);
+  int getAnimationDuration() =>
+      _settingsBox.get('animationDurationMs', defaultValue: 500);
 
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
 
@@ -27,6 +24,9 @@ class Settings extends ChangeNotifier {
   bool getShowNames() => _settingsBox.get('showNames', defaultValue: true);
 
   bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
+
+  bool getShowSearchString() =>
+      _settingsBox.get('showSearchString', defaultValue: true);
 
   int getDrawingTimeout() =>
       _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
@@ -47,13 +47,8 @@ class Settings extends ChangeNotifier {
       Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
 
   // setters
-  void setBackgroundColor(Color color) {
-    _settingsBox.put('backgroundColor', color.value);
-    notifyListeners();
-  }
-
-  void setEnableAnimations(bool value) {
-    _settingsBox.put('enableAnimations', value);
+  void setAnimationsDuration(int value) {
+    _settingsBox.put('animationDurationMs', value);
     notifyListeners();
   }
 
@@ -94,6 +89,11 @@ class Settings extends ChangeNotifier {
 
   void setShowWeather(bool value) {
     _settingsBox.put('showWeather', value);
+    notifyListeners();
+  }
+
+  void setShowSearchString(bool value) {
+    _settingsBox.put('showSearchString', value);
     notifyListeners();
   }
 
