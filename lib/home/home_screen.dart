@@ -109,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen>
                 child: ScaleTransition(
                   scale: _animation,
                   child: Scaffold(
+                    resizeToAvoidBottomInset: false,
                     backgroundColor: settings.getBackgroundColor(),
                     body: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

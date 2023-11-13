@@ -50,8 +50,8 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
 
   // add app specific tiles if app parameter was given
   if (app != null) {
-    FocusNode nameFocus = FocusNode();
-    var controller = TextEditingController(text: app.appName);
+    var nameFocus = FocusNode();
+    var nameController = TextEditingController(text: app.appName);
     AppsProvider appsProvider = context.read<AppsProvider>();
     List<Widget> appSpecificTiles = [
       StatefulBuilder(
@@ -59,7 +59,7 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: TextFormField(
-              controller: controller,
+              controller: nameController,
               style: const TextStyle(fontSize: 30),
               focusNode: nameFocus,
               decoration: InputDecoration(
@@ -79,7 +79,7 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
                     : IconButton(
                         onPressed: () {
                           app.appName = app.originalName;
-                          controller.text = app.originalName;
+                          nameController.text = app.originalName;
                           appsProvider.update(app);
                           setState(() {});
                         },
