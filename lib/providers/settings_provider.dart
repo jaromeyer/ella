@@ -34,8 +34,8 @@ class Settings extends ChangeNotifier {
   String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
       defaultValue: "org.lineageos.etar");
 
-  String getWeatherFormat() =>
-      _settingsBox.get('weatherFormat', defaultValue: "%l:+%c%t");
+  String getWeatherUrl() => _settingsBox.get('weatherUrl',
+      defaultValue: "https://wttr.in/?format=%l:+%c%t");
 
   String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
       defaultValue: "ch.admin.meteoswiss");
@@ -107,8 +107,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setWeatherFormat(String value) {
-    _settingsBox.put('weatherFormat', value);
+  void setWeatherUrl(String value) {
+    _settingsBox.put('weatherUrl', value);
     notifyListeners();
   }
 

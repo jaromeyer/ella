@@ -35,10 +35,10 @@ class _OverviewWidgetState extends State<OverviewWidget> {
   int _batteryLevel = 0;
   bool _isCharging = false;
 
-  void _updateWeather(String weatherFormat) async {
+  void _updateWeather(String weatherUrl) async {
     try {
       http.Response response =
-          await http.get(Uri.parse('https://wttr.in/?format=$weatherFormat'));
+          await http.get(Uri.parse(weatherUrl));
       _weatherString = response.body;
       _lastWeatherUpdate = DateTime.now();
       setState(() {});
@@ -75,7 +75,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     super.initState();
 
     // initial update
-    _updateWeather(context.read<Settings>().getWeatherFormat());
+    _updateWeather(context.read<Settings>().getWeatherUrl());
     _updateBattery();
     _updateAlarm();
 
@@ -85,7 +85,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
         // update weather if last successful update was at least 15 minutes ago
         if (DateTime.now().difference(_lastWeatherUpdate) >
             const Duration(minutes: 15)) {
-          _updateWeather(context.read<Settings>().getWeatherFormat());
+          _updateWeather(context.read<Settings>().getWeatherUrl());
         }
         _updateBattery();
         _updateAlarm();
