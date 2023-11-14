@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:battery_plus/battery_plus.dart';
-import 'package:device_apps/device_apps.dart';
+import 'package:ella/providers/apps_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_broadcasts/flutter_broadcasts.dart';
 import 'package:http/http.dart' as http;
@@ -37,8 +37,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
 
   void _updateWeather(String weatherUrl) async {
     try {
-      http.Response response =
-          await http.get(Uri.parse(weatherUrl));
+      http.Response response = await http.get(Uri.parse(weatherUrl));
       _weatherString = response.body;
       _lastWeatherUpdate = DateTime.now();
       setState(() {});
@@ -109,6 +108,15 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     super.dispose();
   }
 
+  void launchApp(String packageName) {
+    if (context.read<AppsProvider>().isInstalled(packageName)) {
+      context.read<AppsProvider>().launchByPackageName(packageName);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("App not available, set a valid app in the settings")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<Settings>(
@@ -143,8 +151,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowDate())
               GestureDetector(
-                onTap: () =>
-                    DeviceApps.openApp(settings.getCalendarPackageName()),
+                onTap: () => launchApp(settings.getCalendarPackageName()),
                 child: Text(
                   DateFormat.MMMEd().format(DateTime.now()),
                   style: TextStyle(fontSize: 16, color: textColor),
@@ -152,8 +159,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowWeather())
               GestureDetector(
-                onTap: () =>
-                    DeviceApps.openApp(settings.getWeatherPackageName()),
+                onTap: () => launchApp(settings.getWeatherPackageName()),
                 child: Text(
                   "$_weatherString (${StringUtils.formatDuration(_lastWeatherUpdate.difference(DateTime.now()))})",
                   style: TextStyle(fontSize: 16, color: textColor),
@@ -161,7 +167,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
               ),
             if (settings.getShowBattery())
               Text(
-                _isCharging ? '$_batteryLevel%+' : '$_batteryLevel%',
+                _isCharging ? '$_batteryLevel%⚡' : '$_batteryLevel%',
                 style: TextStyle(fontSize: 16, color: textColor),
               ),
           ],

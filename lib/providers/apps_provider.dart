@@ -86,4 +86,12 @@ class AppsProvider extends ChangeNotifier {
     _appsBox.put(app.packageName, app);
     notifyListeners();
   }
+
+  bool isInstalled(String packageName) {
+    return _appsBox.containsKey(packageName);
+  }
+
+  void launchByPackageName(String packageName) {
+    DeviceApps.openApp(packageName);
+  }
 }

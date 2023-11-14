@@ -19,6 +19,8 @@ class SettingsScreen extends StatelessWidget {
       body: Consumer<Settings>(
         builder: (context, settings, _) {
           return SettingsList(
+            contentPadding:
+                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
             sections: [
               SettingsSection(
                 title: const Text('General'),
@@ -104,8 +106,8 @@ class SettingsScreen extends StatelessWidget {
                       showAppPicker(
                         context: context,
                         title: "Pick calendar app",
-                        onAppPicked: (app) =>
-                            settings.setCalendarPackageName(app.packageName),
+                        onAppPicked: (app) => settings
+                            .setCalendarPackageName(app?.packageName ?? "none"),
                       );
                     },
                   ),
@@ -133,8 +135,8 @@ class SettingsScreen extends StatelessWidget {
                       showAppPicker(
                         context: context,
                         title: "Pick weather app",
-                        onAppPicked: (app) =>
-                            settings.setWeatherPackageName(app.packageName),
+                        onAppPicked: (app) => settings
+                            .setWeatherPackageName(app?.packageName ?? "none"),
                       );
                     },
                   ),

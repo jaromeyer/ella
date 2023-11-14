@@ -7,7 +7,7 @@ import '../utils/cached_image.dart';
 
 void showAppPicker({
   required BuildContext context,
-  required ValueChanged<CachedApplication> onAppPicked,
+  required ValueChanged<CachedApplication?> onAppPicked,
   String title = "Pick app",
 }) {
   showDialog<void>(
@@ -20,21 +20,31 @@ void showAppPicker({
         content: SizedBox(
           width: 100,
           child: ListView.builder(
-            itemCount: apps.length,
+            itemCount: apps.length + 1,
             itemBuilder: (_, index) {
-              var app = apps[index];
-              return ListTile(
-                title: Text(app.appName),
-                leading: CachedMemoryImage(
-                  width: 40,
-                  bytes: app.icon,
-                  identifier: ValueKey(app.packageName),
-                ),
-                onTap: () {
-                  onAppPicked(app);
-                  Navigator.of(context).pop();
-                },
-              );
+              if (index == 0) {
+                return ListTile(
+                  title: const Text("None"),
+                  onTap: () {
+                    onAppPicked(null);
+                    Navigator.of(context).pop();
+                  },
+                );
+              } else {
+                var app = apps[index - 1];
+                return ListTile(
+                  title: Text(app.appName),
+                  leading: CachedMemoryImage(
+                    width: 40,
+                    bytes: app.icon,
+                    identifier: ValueKey(app.packageName),
+                  ),
+                  onTap: () {
+                    onAppPicked(app);
+                    Navigator.of(context).pop();
+                  },
+                );
+              }
             },
           ),
         ),

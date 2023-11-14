@@ -8,43 +8,43 @@ class Settings extends ChangeNotifier {
   int getAnimationDuration() =>
       _settingsBox.get('animationDurationMs', defaultValue: 500);
 
+  String getCalendarPackageName() =>
+      _settingsBox.get('calendarPackageName', defaultValue: "none");
+
+  int getDrawingTimeout() =>
+      _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
+
+  double getScalingFactor() =>
+      _settingsBox.get('scalingFactor', defaultValue: 1.0);
+
   bool getShowBattery() => _settingsBox.get('showBattery', defaultValue: true);
-
-  bool getShowNextAlarm() =>
-      _settingsBox.get('showNextAlarm', defaultValue: true);
-
-  bool getShowHelp() => _settingsBox.get('showHelp', defaultValue: true);
 
   bool getShowClock() => _settingsBox.get('showClock', defaultValue: true);
 
   bool getShowDate() => _settingsBox.get('showDate', defaultValue: true);
 
+  bool getShowHelp() => _settingsBox.get('showHelp', defaultValue: true);
+
   bool getShowIcons() => _settingsBox.get('showIcons', defaultValue: true);
 
   bool getShowNames() => _settingsBox.get('showNames', defaultValue: true);
 
-  bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
+  bool getShowNextAlarm() =>
+      _settingsBox.get('showNextAlarm', defaultValue: true);
 
   bool getShowSearchString() =>
       _settingsBox.get('showSearchString', defaultValue: true);
 
-  int getDrawingTimeout() =>
-      _settingsBox.get('drawingTimeoutMs', defaultValue: 500);
-
-  String getCalendarPackageName() => _settingsBox.get('calendarPackageName',
-      defaultValue: "org.lineageos.etar");
-
-  String getWeatherUrl() => _settingsBox.get('weatherUrl',
-      defaultValue: "https://wttr.in/?format=%l:+%c%t");
-
-  String getWeatherPackageName() => _settingsBox.get('weatherPackageName',
-      defaultValue: "ch.admin.meteoswiss");
-
-  double getScalingFactor() =>
-      _settingsBox.get('scalingFactor', defaultValue: 1.0);
+  bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
 
   Color getTextColor() =>
       Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
+
+  String getWeatherPackageName() =>
+      _settingsBox.get('weatherPackageName', defaultValue: "none");
+
+  String getWeatherUrl() => _settingsBox.get('weatherUrl',
+      defaultValue: "https://wttr.in/?format=%l:+%c%t");
 
   // setters
   void setAnimationsDuration(int value) {
@@ -52,18 +52,23 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCalendarPackageName(String value) {
+    _settingsBox.put('calendarPackageName', value);
+    notifyListeners();
+  }
+
+  void setDrawingTimeout(int value) {
+    _settingsBox.put('drawingTimeoutMs', value);
+    notifyListeners();
+  }
+
+  void setScalingFactor(double value) {
+    _settingsBox.put('scalingFactor', value);
+    notifyListeners();
+  }
+
   void setShowBattery(bool value) {
     _settingsBox.put('showBattery', value);
-    notifyListeners();
-  }
-
-  void setShowNextAlarm(bool value) {
-    _settingsBox.put('showNextAlarm', value);
-    notifyListeners();
-  }
-
-  void setShowHelp(bool value) {
-    _settingsBox.put('showHelp', value);
     notifyListeners();
   }
 
@@ -77,6 +82,11 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setShowHelp(bool value) {
+    _settingsBox.put('showHelp', value);
+    notifyListeners();
+  }
+
   void setShowIcons(bool value) {
     _settingsBox.put('showIcons', value);
     notifyListeners();
@@ -87,8 +97,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setShowWeather(bool value) {
-    _settingsBox.put('showWeather', value);
+  void setShowNextAlarm(bool value) {
+    _settingsBox.put('showNextAlarm', value);
     notifyListeners();
   }
 
@@ -97,18 +107,13 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDrawingTimeout(int value) {
-    _settingsBox.put('drawingTimeoutMs', value);
+  void setShowWeather(bool value) {
+    _settingsBox.put('showWeather', value);
     notifyListeners();
   }
 
-  void setCalendarPackageName(String value) {
-    _settingsBox.put('calendarPackageName', value);
-    notifyListeners();
-  }
-
-  void setWeatherUrl(String value) {
-    _settingsBox.put('weatherUrl', value);
+  void setTextColor(Color color) {
+    _settingsBox.put('textColor', color.value);
     notifyListeners();
   }
 
@@ -117,13 +122,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setScalingFactor(double value) {
-    _settingsBox.put('scalingFactor', value);
-    notifyListeners();
-  }
-
-  void setTextColor(Color color) {
-    _settingsBox.put('textColor', color.value);
+  void setWeatherUrl(String value) {
+    _settingsBox.put('weatherUrl', value);
     notifyListeners();
   }
 }
