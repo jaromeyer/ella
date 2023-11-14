@@ -129,7 +129,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
                   style: TextStyle(fontSize: 42, color: textColor),
                 ),
               ),
-            if (settings.getShowDate())
+            if (settings.getShowNextAlarm())
               GestureDetector(
                 onTap: () {
                   const AndroidIntent(
