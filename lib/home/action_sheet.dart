@@ -45,7 +45,6 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
       leading: const Icon(Icons.settings),
       title: const Text('Launcher settings'),
     ),
-    Container(height: MediaQuery.of(context).padding.bottom)
   ];
 
   // add app specific tiles if app parameter was given
@@ -138,7 +137,10 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
     ),
     builder: (context) {
-      return Wrap(children: tiles);
+      return Padding(
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+        child: Wrap(children: tiles),
+      );
     },
   );
 }
