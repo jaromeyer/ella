@@ -2,7 +2,7 @@ package ch.jaromeyer.ella
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
-import  io.flutter.embedding.android.TransparencyMode
+import  io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
@@ -19,26 +19,24 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
             // This method is invoked on the main thread.
-            call, result ->
+                call, result ->
             if (call.method == "getNextAlarm") {
-            val nextAlarm = getNextAlarm()
+                val nextAlarm = getNextAlarm()
                 result.success(nextAlarm)
             } else {
-            result.notImplemented()
+                result.notImplemented()
             }
         }
-    
-    }
 
+    }
 
     private fun getNextAlarm(): Long {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        if(alarmManager.nextAlarmClock == null)
-            return -1
+        if (alarmManager.nextAlarmClock == null) return -1
         return alarmManager.nextAlarmClock.triggerTime
     }
 
-    override fun getTransparencyMode(): TransparencyMode {
-        return TransparencyMode.transparent
+    override fun getBackgroundMode(): BackgroundMode {
+        return BackgroundMode.transparent
     }
 }
