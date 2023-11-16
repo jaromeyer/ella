@@ -12,8 +12,7 @@ class DrawingOverlay extends StatefulWidget {
   final Function(Ink)? callback;
   final Widget child;
 
-  const DrawingOverlay({Key? key, this.callback, required this.child})
-      : super(key: key);
+  const DrawingOverlay({super.key, this.callback, required this.child});
 
   @override
   State<DrawingOverlay> createState() => _DrawingOverlayState();

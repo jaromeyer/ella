@@ -9,7 +9,8 @@ import '../providers/settings_provider.dart';
 import 'app_tile.dart';
 
 class AppList extends StatefulWidget {
-  const AppList({Key? key, required this.filter}) : super(key: key);
+  const AppList({super.key, required this.filter});
+
   final String filter;
 
   @override

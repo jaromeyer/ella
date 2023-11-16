@@ -40,7 +40,7 @@ Future<void> main() async {
 }
 
 class EllaApp extends StatelessWidget {
-  const EllaApp({Key? key}) : super(key: key);
+  const EllaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,8 @@ class EllaApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ella',
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData.light(useMaterial3: true),
+        darkTheme: ThemeData.dark(useMaterial3: true),
         initialRoute: '/',
         routes: {
           '/': (context) => const HomeScreen(),
