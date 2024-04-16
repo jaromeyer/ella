@@ -9,6 +9,7 @@ class CachedApplication {
   late String originalName;
   late int version;
   late Uint8List icon;
+  late bool isSystem;
   bool pinned = false;
 
   CachedApplication.fromApplication(Application app) {
@@ -17,14 +18,16 @@ class CachedApplication {
     originalName = app.appName;
     version = app.versionCode;
     icon = (app as ApplicationWithIcon).icon;
+    isSystem = app.systemApp;
   }
 
   CachedApplication.fromJson(Map<String, dynamic> json) {
     packageName = json['packageName'];
     appName = json['appName'];
     originalName = json['originalName'];
-    icon = base64Decode(json['icon']);
     version = json['version'];
+    icon = base64Decode(json['icon']);
+    isSystem = json['isSystem'];
     pinned = json['pinned'];
   }
 
@@ -46,6 +49,7 @@ class CachedApplication {
         'originalName': originalName,
         'version': version,
         'icon': base64Encode(icon),
+        'isSystem': isSystem,
         'pinned': pinned,
       };
 

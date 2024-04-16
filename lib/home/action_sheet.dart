@@ -118,14 +118,15 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
         leading: const Icon(Icons.info),
         title: const Text('App info'),
       ),
-      ListTile(
-        onTap: () {
-          Navigator.pop(context);
-          app.uninstall();
-        },
-        leading: const Icon(Icons.delete),
-        title: const Text('Uninstall'),
-      ),
+      if (!app.isSystem)
+        ListTile(
+          onTap: () {
+            Navigator.pop(context);
+            app.uninstall();
+          },
+          leading: const Icon(Icons.delete),
+          title: const Text('Uninstall'),
+        ),
       const Divider(),
     ];
     tiles = appSpecificTiles + tiles;
