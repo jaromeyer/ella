@@ -21,7 +21,8 @@ class OverviewWidget extends StatefulWidget {
   State<OverviewWidget> createState() => _OverviewWidgetState();
 }
 
-class _OverviewWidgetState extends State<OverviewWidget> {
+class _OverviewWidgetState extends State<OverviewWidget>
+    with WidgetsBindingObserver {
   final BroadcastReceiver _broadcastReceiver = BroadcastReceiver(
     names: [
       "android.intent.action.TIME_TICK",
@@ -69,9 +70,20 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     setState(() {});
   }
 
+  void _updateOverview() {
+    // update weather if last successful update was at least 15 minutes ago
+    if (DateTime.now().difference(_lastWeatherUpdate) >
+        const Duration(minutes: 15)) {
+      _updateWeather(context.read<Settings>().getWeatherUrl());
+    }
+    _updateBattery();
+    _updateAlarm();
+  }
+
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
     // initial update
     _updateWeather(context.read<Settings>().getWeatherUrl());
@@ -81,13 +93,7 @@ class _OverviewWidgetState extends State<OverviewWidget> {
     // register receivers to trigger subsequent updates
     _broadcastReceiver.messages.listen((event) {
       if (event.name == "android.intent.action.TIME_TICK") {
-        // update weather if last successful update was at least 15 minutes ago
-        if (DateTime.now().difference(_lastWeatherUpdate) >
-            const Duration(minutes: 15)) {
-          _updateWeather(context.read<Settings>().getWeatherUrl());
-        }
-        _updateBattery();
-        _updateAlarm();
+        _updateOverview();
       }
       if (event.name == "android.app.action.NEXT_ALARM_CLOCK_CHANGED") {
         _updateAlarm();
@@ -103,9 +109,15 @@ class _OverviewWidgetState extends State<OverviewWidget> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _broadcastReceiver.stop;
     _batteryListener.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    _updateOverview();
   }
 
   void launchApp(String packageName) {
