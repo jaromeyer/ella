@@ -1,15 +1,14 @@
 package ch.jaromeyer.ella
 
-import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
-import  io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
+import androidx.annotation.NonNull
 import android.content.Context
 import android.content.ContextWrapper
 import android.app.AlarmManager
-
 
 class MainActivity : FlutterActivity() {
 
@@ -27,7 +26,6 @@ class MainActivity : FlutterActivity() {
                 result.notImplemented()
             }
         }
-
     }
 
     private fun getNextAlarm(): Long {
@@ -36,7 +34,5 @@ class MainActivity : FlutterActivity() {
         return alarmManager.nextAlarmClock.triggerTime
     }
 
-    override fun getBackgroundMode(): BackgroundMode {
-        return BackgroundMode.transparent
-    }
+    override fun getBackgroundMode(): BackgroundMode = BackgroundMode.transparent
 }
