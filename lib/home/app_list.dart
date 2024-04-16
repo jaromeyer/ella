@@ -1,5 +1,4 @@
 import 'package:animated_list_plus/animated_list_plus.dart';
-import 'package:animated_list_plus/transitions.dart';
 import 'package:ella/utils/cached_application.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,11 +70,25 @@ class _AppListState extends State<AppList> {
           items: children,
           areItemsTheSame: (a, b) => a.key == b.key,
           itemBuilder: (_, animation, child, __) {
-            return SizeFadeTransition(
-              sizeFraction: 0.6,
-              curve: Curves.easeInOut,
-              animation: animation,
-              child: child,
+            return SizeTransition(
+              sizeFactor:
+                  CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+              child: FadeTransition(
+                opacity:
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                child: child,
+              ),
+            );
+          },
+          removeItemBuilder: (_, animation, child) {
+            return SizeTransition(
+              sizeFactor:
+                  CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+              child: FadeTransition(
+                opacity:
+                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                child: child,
+              ),
             );
           },
         );
