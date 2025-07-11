@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ella/home/help_dialog.dart';
 import 'package:ella/providers/settings_provider.dart';
 import 'package:flutter/material.dart' hide Ink;
@@ -96,11 +94,11 @@ class _HomeScreenState extends State<HomeScreen>
               settings.getTextColor(),
             ),
           ),
-          child: WillPopScope(
-            onWillPop: () {
+          child: PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (_, _) {
               // show pinned apps when going back
               setState(() => _filter = "");
-              return Future.value(false);
             },
             child: GestureDetector(
               onLongPress: () {

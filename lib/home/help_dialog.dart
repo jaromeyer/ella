@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/settings_provider.dart';
 
-void showHelpDialog(context, {dismissForever = false}) {
+void showHelpDialog(BuildContext context, {dismissForever = false}) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(

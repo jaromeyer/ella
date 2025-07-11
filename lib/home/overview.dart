@@ -136,7 +136,7 @@ class _OverviewWidgetState extends State<OverviewWidget>
   @override
   Widget build(BuildContext context) {
     return Consumer<Settings>(
-      builder: (_, settings, __) {
+      builder: (_, settings, _) {
         var textColor = settings.getTextColor();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

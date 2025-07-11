@@ -38,7 +38,7 @@ class Settings extends ChangeNotifier {
   bool getShowWeather() => _settingsBox.get('showWeather', defaultValue: true);
 
   Color getTextColor() =>
-      Color(_settingsBox.get('textColor', defaultValue: Colors.white.value));
+      Color(_settingsBox.get('textColor', defaultValue: Colors.white.toARGB32()));
 
   String getWeatherPackageName() =>
       _settingsBox.get('weatherPackageName', defaultValue: "none");
@@ -115,7 +115,7 @@ class Settings extends ChangeNotifier {
   }
 
   void setTextColor(Color color) {
-    _settingsBox.put('textColor', color.value);
+    _settingsBox.put('textColor', color.toARGB32());
     notifyListeners();
   }
 

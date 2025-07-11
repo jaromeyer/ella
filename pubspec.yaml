@@ -1,6 +1,6 @@
 name: ella
 description: "A minimalistic but lightning fast gesture based Android launcher written in Flutter."
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0
 
 environment:

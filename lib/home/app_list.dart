@@ -70,7 +70,7 @@ class _AppListState extends State<AppList> {
           physics: const NeverScrollableScrollPhysics(),
           items: children,
           areItemsTheSame: (a, b) => a.key == b.key,
-          itemBuilder: (_, animation, child, __) {
+          itemBuilder: (_, animation, child, _) {
             return SizeTransition(
               sizeFactor: CurvedAnimation(
                 parent: animation,
