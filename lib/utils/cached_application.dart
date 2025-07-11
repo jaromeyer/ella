@@ -17,7 +17,7 @@ class CachedApplication {
     appName = app.appName;
     originalName = app.appName;
     version = app.versionCode;
-    icon = (app as ApplicationWithIcon).icon;
+    icon = app.icon ?? Uint8List(0);
     isSystem = app.systemApp;
   }
 
@@ -40,7 +40,7 @@ class CachedApplication {
     }
     originalName = app.appName;
     version = app.versionCode;
-    icon = (app as ApplicationWithIcon).icon;
+    icon = app.icon ?? Uint8List(0);
   }
 
   Map<String, dynamic> toJson() => {

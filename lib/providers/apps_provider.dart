@@ -32,18 +32,18 @@ class AppsProvider extends ChangeNotifier {
     // register change listener to update _apps
     DeviceApps.listenToAppsChanges().listen((event) async {
       String packageName = event.packageName;
-      switch (event.event) {
-        case ApplicationEventType.installed:
-        case ApplicationEventType.disabled: // disabled and enabled are mixed-up
-        case ApplicationEventType.updated:
+      switch (event) {
+        case ApplicationEventInstalled _:
+        case ApplicationEventDisabled _: // disabled and enabled are mixed-up
+        case ApplicationEventUpdated _:
           var app = (await DeviceApps.getApp(packageName, true))!;
           _appsBox.put(
               app.packageName,
               (_appsBox.get(app.packageName)?..update(app)) ??
                   CachedApplication.fromApplication(app));
           break;
-        case ApplicationEventType.uninstalled:
-        case ApplicationEventType.enabled: // disabled and enabled are mixed-up
+        case ApplicationEventUninstalled _:
+        case ApplicationEventEnabled _: // disabled and enabled are mixed-up
           _appsBox.delete(packageName);
           break;
       }
