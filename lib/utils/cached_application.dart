@@ -44,14 +44,14 @@ class CachedApplication {
   }
 
   Map<String, dynamic> toJson() => {
-        'packageName': packageName,
-        'appName': appName,
-        'originalName': originalName,
-        'version': version,
-        'icon': base64Encode(icon),
-        'isSystem': isSystem,
-        'pinned': pinned,
-      };
+    'packageName': packageName,
+    'appName': appName,
+    'originalName': originalName,
+    'version': version,
+    'icon': base64Encode(icon),
+    'isSystem': isSystem,
+    'pinned': pinned,
+  };
 
   void openAppSettings() {
     DeviceApps.openAppSettings(packageName);

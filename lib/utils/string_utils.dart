@@ -2,7 +2,10 @@ import 'dart:math';
 
 class StringUtils {
   static String formatNumberWithUnit(
-      int value, String singularUnit, String pluralUnit) {
+    int value,
+    String singularUnit,
+    String pluralUnit,
+  ) {
     return "$value ${value == 1 ? singularUnit : pluralUnit}";
   }
 
@@ -19,10 +22,11 @@ class StringUtils {
         if (duration.inHours % 24 > 0)
           formatNumberWithUnit(duration.inHours % 24, "hour", "hours"),
         if (duration.inMinutes % 60 > 0)
-          formatNumberWithUnit(duration.inMinutes % 60, "minute", "minutes")
+          formatNumberWithUnit(duration.inMinutes % 60, "minute", "minutes"),
       ];
       String joined = grammaticalJoin(
-          items.getRange(0, min(precision, items.length)).toList());
+        items.getRange(0, min(precision, items.length)).toList(),
+      );
       return past ? "$joined ago" : "in $joined";
     }
   }

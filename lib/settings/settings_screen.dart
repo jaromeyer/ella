@@ -13,14 +13,13 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: Consumer<Settings>(
         builder: (context, settings, _) {
           return SettingsList(
-            contentPadding:
-                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+            contentPadding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
             sections: [
               SettingsSection(
                 title: const Text('General'),
@@ -29,13 +28,14 @@ class SettingsScreen extends StatelessWidget {
                     title: const Text('About ella'),
                     leading: const Icon(Icons.info_outline),
                     onPressed: (_) => showAboutDialog(
-                        context: context,
-                        applicationVersion: '1.0.0',
-                        applicationIcon: const Image(
-                          image: AssetImage('assets/icon.png'),
-                          height: 40,
-                        ),
-                        applicationLegalese: 'Licensed under the GPLv3'),
+                      context: context,
+                      applicationVersion: '1.0.0',
+                      applicationIcon: const Image(
+                        image: AssetImage('assets/icon.png'),
+                        height: 40,
+                      ),
+                      applicationLegalese: 'Licensed under the GPLv3',
+                    ),
                   ),
                   SettingsTile(
                     title: const Text('Change default launcher'),
@@ -50,13 +50,14 @@ class SettingsScreen extends StatelessWidget {
                     title: const Text('Gesture timeout'),
                     trailing: Text('${settings.getDrawingTimeout()} ms'),
                     value: Slider(
-                        value: settings.getDrawingTimeout().toDouble(),
-                        min: 0,
-                        max: 2000,
-                        divisions: 20,
-                        label: '${settings.getDrawingTimeout()} ms',
-                        onChanged: (value) =>
-                            settings.setDrawingTimeout(value.round())),
+                      value: settings.getDrawingTimeout().toDouble(),
+                      min: 0,
+                      max: 2000,
+                      divisions: 20,
+                      label: '${settings.getDrawingTimeout()} ms',
+                      onChanged: (value) =>
+                          settings.setDrawingTimeout(value.round()),
+                    ),
                   ),
                   SettingsTile(
                     title: const Text('Text color'),
@@ -68,7 +69,9 @@ class SettingsScreen extends StatelessWidget {
                         color: settings.getTextColor(),
                         shape: BoxShape.circle,
                         border: Border.all(
-                            color: Theme.of(context).highlightColor, width: 2),
+                          color: Theme.of(context).highlightColor,
+                          width: 2,
+                        ),
                       ),
                     ),
                     onPressed: (_) => showColorPicker(
@@ -106,8 +109,9 @@ class SettingsScreen extends StatelessWidget {
                       showAppPicker(
                         context: context,
                         title: "Pick calendar app",
-                        onAppPicked: (app) => settings
-                            .setCalendarPackageName(app?.packageName ?? "none"),
+                        onAppPicked: (app) => settings.setCalendarPackageName(
+                          app?.packageName ?? "none",
+                        ),
                       );
                     },
                   ),
@@ -135,8 +139,9 @@ class SettingsScreen extends StatelessWidget {
                       showAppPicker(
                         context: context,
                         title: "Pick weather app",
-                        onAppPicked: (app) => settings
-                            .setWeatherPackageName(app?.packageName ?? "none"),
+                        onAppPicked: (app) => settings.setWeatherPackageName(
+                          app?.packageName ?? "none",
+                        ),
                       );
                     },
                   ),
@@ -169,24 +174,26 @@ class SettingsScreen extends StatelessWidget {
                     title: const Text('Animation duration'),
                     trailing: Text('${settings.getAnimationDuration()} ms'),
                     value: Slider(
-                        value: settings.getAnimationDuration().toDouble(),
-                        min: 0,
-                        max: 1000,
-                        divisions: 20,
-                        label: '${settings.getAnimationDuration()} ms',
-                        onChanged: (value) =>
-                            settings.setAnimationsDuration(value.round())),
+                      value: settings.getAnimationDuration().toDouble(),
+                      min: 0,
+                      max: 1000,
+                      divisions: 20,
+                      label: '${settings.getAnimationDuration()} ms',
+                      onChanged: (value) =>
+                          settings.setAnimationsDuration(value.round()),
+                    ),
                   ),
                   SettingsTile(
                     title: const Text('Scale factor'),
                     trailing: Text(settings.getScalingFactor().toString()),
                     value: Slider(
-                        value: settings.getScalingFactor(),
-                        min: 0.5,
-                        max: 1.5,
-                        divisions: 10,
-                        label: settings.getScalingFactor().toString(),
-                        onChanged: (value) => settings.setScalingFactor(value)),
+                      value: settings.getScalingFactor(),
+                      min: 0.5,
+                      max: 1.5,
+                      divisions: 10,
+                      label: settings.getScalingFactor().toString(),
+                      onChanged: (value) => settings.setScalingFactor(value),
+                    ),
                   ),
                 ],
               ),

@@ -43,8 +43,10 @@ class Settings extends ChangeNotifier {
   String getWeatherPackageName() =>
       _settingsBox.get('weatherPackageName', defaultValue: "none");
 
-  String getWeatherUrl() => _settingsBox.get('weatherUrl',
-      defaultValue: "https://wttr.in/?format=%l:+%c%t");
+  String getWeatherUrl() => _settingsBox.get(
+    'weatherUrl',
+    defaultValue: "https://wttr.in/?format=%l:+%c%t",
+  );
 
   // setters
   void setAnimationsDuration(int value) {

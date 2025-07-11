@@ -18,7 +18,7 @@ class StrokePainter extends CustomPainter {
     paint.color = context.read<Settings>().getTextColor();
     for (Stroke stroke in ink.strokes) {
       List<PointVector> line = [
-        for (StrokePoint sp in stroke.points) PointVector(sp.x, sp.y)
+        for (StrokePoint sp in stroke.points) PointVector(sp.x, sp.y),
       ];
       drawLine(line, canvas, paint);
     }
@@ -44,8 +44,12 @@ class StrokePainter extends CustomPainter {
       return;
     } else if (outlinePoints.length < 2) {
       // If the list only has one point, draw a dot.
-      path.addOval(Rect.fromCircle(
-          center: Offset(outlinePoints[0].dx, outlinePoints[0].dy), radius: 1));
+      path.addOval(
+        Rect.fromCircle(
+          center: Offset(outlinePoints[0].dx, outlinePoints[0].dy),
+          radius: 1,
+        ),
+      );
     } else {
       // Otherwise, draw a line that connects each point with a bezier curve segment.
       path.moveTo(outlinePoints[0].dx, outlinePoints[0].dy);
@@ -54,7 +58,11 @@ class StrokePainter extends CustomPainter {
         final p0 = outlinePoints[i];
         final p1 = outlinePoints[i + 1];
         path.quadraticBezierTo(
-            p0.dx, p0.dy, (p0.dx + p1.dx) / 2, (p0.dy + p1.dy) / 2);
+          p0.dx,
+          p0.dy,
+          (p0.dx + p1.dx) / 2,
+          (p0.dy + p1.dy) / 2,
+        );
       }
     }
 

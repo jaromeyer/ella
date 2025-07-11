@@ -1,14 +1,12 @@
 package ch.jaromeyer.ella
 
+import android.app.AlarmManager
+import android.content.Context
+import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-
-import androidx.annotation.NonNull
-import android.content.Context
-import android.content.ContextWrapper
-import android.app.AlarmManager
 
 class MainActivity : FlutterActivity() {
 
@@ -18,7 +16,8 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler {
             // This method is invoked on the main thread.
-                call, result ->
+            call,
+            result ->
             if (call.method == "getNextAlarm") {
                 val nextAlarm = getNextAlarm()
                 result.success(nextAlarm)

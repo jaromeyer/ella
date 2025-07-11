@@ -4,24 +4,32 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class AppsProvider extends ChangeNotifier {
-  final Box<CachedApplication> _appsBox =
-      Hive.box<CachedApplication>(name: 'apps');
+  final Box<CachedApplication> _appsBox = Hive.box<CachedApplication>(
+    name: 'apps',
+  );
 
   AppsProvider() {
     Hive.registerAdapter(
-        'CachedApplication', (json) => CachedApplication.fromJson(json));
+      'CachedApplication',
+      (json) => CachedApplication.fromJson(json),
+    );
     // query installed apps and update asynchronously
     DeviceApps.getInstalledApplications(
-            onlyAppsWithLaunchIntent: true,
-            includeSystemApps: true,
-            includeAppIcons: true)
-        .then((apps) {
-      _appsBox.deleteAll(_appsBox.keys
-        ..removeWhere((pn) => apps.map((app) => app.packageName).contains(pn)));
+      onlyAppsWithLaunchIntent: true,
+      includeSystemApps: true,
+      includeAppIcons: true,
+    ).then((apps) {
+      _appsBox.deleteAll(
+        _appsBox.keys..removeWhere(
+          (pn) => apps.map((app) => app.packageName).contains(pn),
+        ),
+      );
       for (var app in apps) {
         if (_appsBox.containsKey(app.packageName)) {
           _appsBox.put(
-              app.packageName, _appsBox.get(app.packageName)!..update(app));
+            app.packageName,
+            _appsBox.get(app.packageName)!..update(app),
+          );
         } else {
           _appsBox.put(app.packageName, CachedApplication.fromApplication(app));
         }
@@ -38,9 +46,10 @@ class AppsProvider extends ChangeNotifier {
         case ApplicationEventUpdated _:
           var app = (await DeviceApps.getApp(packageName, true))!;
           _appsBox.put(
-              app.packageName,
-              (_appsBox.get(app.packageName)?..update(app)) ??
-                  CachedApplication.fromApplication(app));
+            app.packageName,
+            (_appsBox.get(app.packageName)?..update(app)) ??
+                CachedApplication.fromApplication(app),
+          );
           break;
         case ApplicationEventUninstalled _:
         case ApplicationEventEnabled _: // disabled and enabled are mixed-up
@@ -51,21 +60,26 @@ class AppsProvider extends ChangeNotifier {
     });
   }
 
-  List<CachedApplication> getPinnedApps() => _appsBox
-      .getAll(_appsBox.keys)
-      .nonNulls
-      .where((app) => app.pinned)
-      .toList()
-    ..sort((a, b) => a.appName.compareTo(b.appName));
+  List<CachedApplication> getPinnedApps() =>
+      _appsBox
+          .getAll(_appsBox.keys)
+          .nonNulls
+          .where((app) => app.pinned)
+          .toList()
+        ..sort((a, b) => a.appName.compareTo(b.appName));
 
   List<CachedApplication> getApps({String filter = ""}) {
     var apps = _appsBox.getAll(_appsBox.keys).nonNulls;
     if (filter.length == 1) {
       apps = apps.where(
-          (app) => app.appName.toLowerCase().startsWith(filter.toLowerCase()));
+        (app) => app.appName.toLowerCase().startsWith(filter.toLowerCase()),
+      );
     } else {
-      apps = apps.where((app) => RegExp('\\b${filter.toLowerCase()}')
-          .hasMatch(app.appName.toLowerCase()));
+      apps = apps.where(
+        (app) => RegExp(
+          '\\b${filter.toLowerCase()}',
+        ).hasMatch(app.appName.toLowerCase()),
+      );
     }
     return apps.toList()..sort((a, b) => a.appName.compareTo(b.appName));
   }

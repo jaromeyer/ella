@@ -57,10 +57,11 @@ class _AppListState extends State<AppList> {
                 ),
               ),
             ),
-          for (var app in apps) AppTile(app, key: Key(app.packageName))
+          for (var app in apps) AppTile(app, key: Key(app.packageName)),
         ];
-        var animationDuration =
-            Duration(milliseconds: settings.getAnimationDuration());
+        var animationDuration = Duration(
+          milliseconds: settings.getAnimationDuration(),
+        );
         return ImplicitlyAnimatedList<Widget>(
           shrinkWrap: true,
           insertDuration: animationDuration,
@@ -71,22 +72,30 @@ class _AppListState extends State<AppList> {
           areItemsTheSame: (a, b) => a.key == b.key,
           itemBuilder: (_, animation, child, __) {
             return SizeTransition(
-              sizeFactor:
-                  CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+              sizeFactor: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
               child: FadeTransition(
-                opacity:
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                ),
                 child: child,
               ),
             );
           },
           removeItemBuilder: (_, animation, child) {
             return SizeTransition(
-              sizeFactor:
-                  CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+              sizeFactor: CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
               child: FadeTransition(
-                opacity:
-                    CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+                opacity: CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.easeInOut,
+                ),
                 child: child,
               ),
             );

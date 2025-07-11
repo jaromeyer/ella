@@ -26,7 +26,7 @@ class _OverviewWidgetState extends State<OverviewWidget>
   final BroadcastReceiver _broadcastReceiver = BroadcastReceiver(
     names: [
       "android.intent.action.TIME_TICK",
-      "android.app.action.NEXT_ALARM_CLOCK_CHANGED"
+      "android.app.action.NEXT_ALARM_CLOCK_CHANGED",
     ],
   );
   late final StreamSubscription<BatteryState> _batteryListener;
@@ -60,8 +60,9 @@ class _OverviewWidgetState extends State<OverviewWidget>
       } else {
         String timeString = DateFormat('EE HH:mm').format(nextAlarm);
         String durationString = StringUtils.formatDuration(
-            nextAlarm.difference(DateTime.now()),
-            precision: 2);
+          nextAlarm.difference(DateTime.now()),
+          precision: 2,
+        );
         _nextAlarm = "⏰ $timeString ($durationString)";
       }
     } on Exception {
@@ -124,8 +125,11 @@ class _OverviewWidgetState extends State<OverviewWidget>
     if (context.read<AppsProvider>().isInstalled(packageName)) {
       context.read<AppsProvider>().launchByPackageName(packageName);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("App not available, set a valid app in the settings")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("App not available, set a valid app in the settings"),
+        ),
+      );
     }
   }
 

@@ -23,8 +23,9 @@ void showActionSheet(BuildContext context, {CachedApplication? app}) {
     ListTile(
       onTap: () {
         Navigator.pop(context);
-        const AndroidIntent(action: 'android.intent.action.SET_WALLPAPER')
-            .launchChooser('Set wallpaper using');
+        const AndroidIntent(
+          action: 'android.intent.action.SET_WALLPAPER',
+        ).launchChooser('Set wallpaper using');
       },
       leading: const Icon(Icons.wallpaper),
       title: const Text('Change wallpaper'),

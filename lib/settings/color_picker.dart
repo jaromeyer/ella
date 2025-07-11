@@ -9,9 +9,7 @@ void showColorPicker({
   Color pickerColor = initialColor;
   showDialog(
     context: context,
-    builder: (
-      BuildContext context,
-    ) {
+    builder: (BuildContext context) {
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
         content: SizedBox(
@@ -44,7 +42,7 @@ void showColorPicker({
                   ColorPicker(
                     pickerColor: pickerColor,
                     onColorChanged: (Color color) => pickerColor = color,
-                  )
+                  ),
                 ],
               ),
             ),

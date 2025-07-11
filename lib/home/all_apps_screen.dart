@@ -39,12 +39,10 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
                 hintText: 'Search apps',
                 contentPadding: EdgeInsets.zero,
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: settings.getTextColor())),
+                  borderSide: BorderSide(color: settings.getTextColor()),
+                ),
                 suffixIcon: (_filter.isEmpty)
-                    ? Icon(
-                        Icons.search,
-                        color: settings.getTextColor(),
-                      )
+                    ? Icon(Icons.search, color: settings.getTextColor())
                     : IconButton(
                         icon: const Icon(Icons.close_rounded),
                         color: settings.getTextColor(),
@@ -61,8 +59,9 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
           ),
           body: Builder(
             builder: (_) {
-              List<CachedApplication> apps =
-                  appsProvider.getApps(filter: _filter);
+              List<CachedApplication> apps = appsProvider.getApps(
+                filter: _filter,
+              );
               if (apps.isNotEmpty) {
                 return Scrollbar(
                   thickness: 1.5,
@@ -70,7 +69,7 @@ class _AllAppsScreenState extends State<AllAppsScreen> {
                     shrinkWrap: true,
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
-                      for (CachedApplication app in apps) AppTile(app)
+                      for (CachedApplication app in apps) AppTile(app),
                     ],
                   ),
                 );

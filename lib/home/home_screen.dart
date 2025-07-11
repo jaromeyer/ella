@@ -23,8 +23,9 @@ class _HomeScreenState extends State<HomeScreen>
     with WidgetsBindingObserver, TickerProviderStateMixin {
   String _filter = "";
 
-  final DigitalInkRecognizer digitalInkRecognizer =
-      DigitalInkRecognizer(languageCode: 'de');
+  final DigitalInkRecognizer digitalInkRecognizer = DigitalInkRecognizer(
+    languageCode: 'de',
+  );
 
   // animation stuff
   late final AnimationController _controller = AnimationController(
@@ -68,12 +69,13 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _recognizeStrokes(Ink ink) async {
-    final List<RecognitionCandidate> candidates =
-        await digitalInkRecognizer.recognize(ink);
+    final List<RecognitionCandidate> candidates = await digitalInkRecognizer
+        .recognize(ink);
     // apply manual tweaks to result
     String prefix = candidates
         .firstWhere(
-            (candidate) => RegExp(r'^[a-zA-Z]+$').hasMatch(candidate.text))
+          (candidate) => RegExp(r'^[a-zA-Z]+$').hasMatch(candidate.text),
+        )
         .text;
     if (prefix == 'l' && !candidates.any((c) => c.text == 'L') ||
         prefix == '1' && candidates.any((c) => c.text == '|')) {
@@ -90,8 +92,9 @@ class _HomeScreenState extends State<HomeScreen>
       builder: (context, settings, _) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
-            statusBarIconBrightness:
-                ThemeData.estimateBrightnessForColor(settings.getTextColor()),
+            statusBarIconBrightness: ThemeData.estimateBrightnessForColor(
+              settings.getTextColor(),
+            ),
           ),
           child: WillPopScope(
             onWillPop: () {

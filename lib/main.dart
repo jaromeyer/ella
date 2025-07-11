@@ -17,10 +17,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // make status bar & system navbar transparent
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: Colors.transparent));
+      systemNavigationBarDividerColor: Colors.transparent,
+    ),
+  );
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
   // configure hive
